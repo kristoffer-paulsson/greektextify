@@ -126,8 +126,14 @@ class GreekGlyph(NamedTuple):
 
 
 GREEK_GLYPH_COMBO = frozenset([
+    # Hyphen
     GreekGlyph('-', False, False, False, False, False, False, False, False, False),
 
+    # Digamma
+    GreekGlyph('Ϝ', False, False, False, False, False, False, False, False, False),
+    GreekGlyph('ϝ', False, False, False, False, False, False, False, False, False),
+
+    # Koine
     GreekGlyph('Α', False, False, False, False, False, False, False, False, False),
     GreekGlyph('Α', False, False, False, False, False, False, False, False, True),
     GreekGlyph('Α', False, False, False, False, False, False, False, True, False),

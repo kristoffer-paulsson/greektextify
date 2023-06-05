@@ -22,3 +22,5 @@ From the link reference:
 * Theodorus Büttner-Wobst after L. Dindorf, Ed.
 * Historiae. Polybius. Theodorus Büttner-Wobst after L. Dindorf. Leipzig. Teubner. 1893-.
 * This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 United States License.
+
+For full description follow the link above.
