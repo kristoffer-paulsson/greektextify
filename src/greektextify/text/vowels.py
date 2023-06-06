@@ -21,26 +21,49 @@
 #
 """Greek alphabet vowels distinct in lowercase."""
 from .alphabet import GreekAlphabet
+from .glyph import GreekGlyph
 
 
 class GreekVowels:
     """Koine vowels described as in Smyth grammar 1.1.2."""
 
-    VOWELS_SHORT = frozenset((
+    SHORT = frozenset([
         GreekAlphabet.LOWER_EPSILON,
         GreekAlphabet.LOWER_OMICRON
-    ))
+    ])  # Short Vowels acc. to Smyth § 4
 
-    VOWELS_LONG = frozenset((
+    LONG = frozenset([
         GreekAlphabet.LOWER_ETA,
         GreekAlphabet.LOWER_OMEGA
-    ))
+    ])  # Long vowels acc. to Smyth § 4
 
-    VOWELS_VAR = frozenset((
+    VARIABLE = frozenset([
         GreekAlphabet.LOWER_ALPHA,
         GreekAlphabet.LOWER_IOTA,
         GreekAlphabet.LOWER_UPSILON
-    ))
+    ])  # Indistinguishable vowels acc. to Smyth § 4
 
-    VOWELS = frozenset(set(VOWELS_SHORT) + set(VOWELS_LONG) + set(VOWELS_VAR))
+    VOWELS = frozenset(set(SHORT) | set(LONG) | set(VARIABLE))
+    NOT_SHORT = frozenset(set(LONG) | set(VARIABLE))
+    # Only not short vowels may have a circumflex: https://en.wikipedia.org/wiki/Greek_diacritics
 
+    @staticmethod
+    def is_vowel(glyph: GreekGlyph) -> bool:
+        """Tells if a glyph is a vowel.
+        Based on Smyth § 4."""
+        return glyph.ch.lower() in GreekVowels.VOWELS
+
+    @staticmethod
+    def is_short(glyph: GreekGlyph) -> bool:
+        """Tells if a vowel is short (true) or long (false).
+        The glyph is expected to be a verified vowel.
+        Based on Smyth § 4 and https://en.wikipedia.org/wiki/Greek_diacritics, § 144 & § 149 Not yet implemented."""
+        ch = glyph.ch.lower()
+        if ch in GreekVowels.SHORT:  # Always short
+            return True
+        elif ch in GreekVowels.NOT_SHORT and glyph.oxia:  # circumflex, always long
+            return False
+        elif ch in GreekVowels.VARIABLE and not glyph.macron:  # short if not marked with macron
+            return True
+        else:  # The rest that are always or considered long
+            return False

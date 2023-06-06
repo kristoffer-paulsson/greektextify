@@ -105,3 +105,37 @@ class GreekAlphabet:
 
     ALPHABET = frozenset(CASE_LOWER | CASE_UPPER | {HYPHEN_MINUS})
 
+    SOUNDS = {
+            # Breve  ̆ is short
+            # Macron  ̄ is long
+            # Circumflex  ̂ is "bent around"
+        LOWER_ALPHA: 'ɑː',  # a: ă aha, ā father
+        LOWER_BETA: 'b',  # b: beg
+        LOWER_GAMMA: 'ɡ',  # g: go; also nasal
+        LOWER_DELTA: 'd',  # d: dig
+        LOWER_EPSILON: 'ɛ',  # ĕ: met
+        LOWER_ZETA: 'z',  # z: daze
+        LOWER_ETA: 'ɛː',  # ē: fête (fr)
+        LOWER_THETA: 'ˈθ',  # th: thin
+        LOWER_IOTA: 'iː',  # ĕ meteor, ī police
+        LOWER_KAPPA: 'k',  # c, k: kin
+        LOWER_LAMBDA: 'l',  # l: let
+        LOWER_MU: 'm',  # m: met
+        LOWER_NU: 'n',  # n: net
+        LOWER_XI: 'ks',  # x: lax
+        LOWER_OMICRON: 'əʊˈ',  # ŏ: obey
+        LOWER_PI: 'p',  # p: pet
+        LOWER_RHO: 'ɹ',  # r: run
+        LOWER_SIGMA: 's',  # s: such
+        LOWER_TAU: 't',  # t: tar
+        LOWER_UPSILON: 'y',  # (u) y: ŭ (fr) tu; ū (fr) sûr
+        LOWER_PHI: 'f',  # ph: graphic
+        LOWER_CHI: 'x',  # ch: machen, ich (ge)
+        LOWER_PSI: 'p.s',  # ps: gypsym
+        LOWER_OMEGA: 'əʊ',  # ō: note
+        LOWER_DIGAMMA: 'w',
+    }
+
+    # https://en.wikipedia.org/wiki/Breve
+    # https://en.wikipedia.org/wiki/Macron_(diacritic)
+    # https://en.wikipedia.org/wiki/Circumflex

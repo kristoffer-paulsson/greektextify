@@ -32,7 +32,7 @@ class GreekDiacritic:
 
     COMBINING_VARIA = '\u0300'
     COMBINING_OXIA = '\u0301'
-    COMBINING_TONOS = COMBINING_OXIA  # Backward compatability
+    COMBINING_TONOS = COMBINING_OXIA  # Backward compatability / (circumflex)
     COMBINING_MACRON = '\u0304'
     COMBINING_VRACHY = '\u0306'
     COMBINING_DIALYTIKA = '\u0308'
