@@ -43,9 +43,10 @@ class GreekVowels:
         GreekAlphabet.LOWER_UPSILON
     ])  # Indistinguishable vowels acc. to Smyth § 4
 
-    VOWELS = frozenset(set(SHORT) | set(LONG) | set(VARIABLE))
     NOT_SHORT = frozenset(set(LONG) | set(VARIABLE))
     # Only not short vowels may have a circumflex: https://en.wikipedia.org/wiki/Greek_diacritics
+
+    VOWELS = frozenset(set(SHORT) | set(LONG) | set(VARIABLE))
 
     @staticmethod
     def is_vowel(glyph: GreekGlyph) -> bool:
@@ -61,7 +62,7 @@ class GreekVowels:
         ch = glyph.ch.lower()
         if ch in GreekVowels.SHORT:  # Always short
             return True
-        elif ch in GreekVowels.NOT_SHORT and glyph.oxia:  # circumflex, always long
+        elif ch in GreekVowels.NOT_SHORT and glyph.perispomeni:  # circumflex, always long
             return False
         elif ch in GreekVowels.VARIABLE and not glyph.macron:  # short if not marked with macron
             return True

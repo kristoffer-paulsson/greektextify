@@ -16,7 +16,66 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Greek diphthongs representing two vowels or more."""
+from typing import Tuple
+
+from .alphabet import GreekAlphabet
+from .glyph import GreekGlyph
+from .pattern import GlyphPattern
 
 
-class GreekDiphthong:
-    pass
+class GreekDiphthong(GlyphPattern):
+    def __init__(self, affix: Tuple[GreekGlyph]):
+        GlyphPattern.__init__(self, affix)
+
+    def is_proper(self) -> bool:
+        """Tells if a diphthong is inverted improper, based on Smyth § 5."""
+        return not self._affix[0].ypogegrammeni
+
+    def is_short(self) -> bool:
+        """Tells if a diphthong is short (a property of vowels), based on Smyth § 5."""
+        return False
+
+    def is_upper(self) -> bool:
+        """Tells if a diphthong is upper case."""
+        return self._affix[0] in GreekAlphabet.CASE_UPPER
+
+
+GREEK_DIPHTHONG = frozenset([
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_ALPHA),
+        GreekGlyph(GreekAlphabet.LOWER_IOTA)
+    ])),
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_EPSILON),
+        GreekGlyph(GreekAlphabet.LOWER_IOTA)
+    ])),
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_OMICRON),
+        GreekGlyph(GreekAlphabet.LOWER_IOTA)
+    ])),
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_ALPHA, ypogegrammeni=True, macron=True)
+    ])),
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_ETA, ypogegrammeni=True)
+    ])),
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_OMEGA, ypogegrammeni=True)
+    ])),
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_ALPHA),
+        GreekGlyph(GreekAlphabet.LOWER_UPSILON)
+    ])),
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_EPSILON),
+        GreekGlyph(GreekAlphabet.LOWER_UPSILON)
+    ])),
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_OMICRON),
+        GreekGlyph(GreekAlphabet.LOWER_UPSILON)
+    ])),
+    GlyphPattern(tuple([
+        GreekGlyph(GreekAlphabet.LOWER_ETA),
+        GreekGlyph(GreekAlphabet.LOWER_UPSILON)
+    ])),
+])
