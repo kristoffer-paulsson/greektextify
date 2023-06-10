@@ -29,6 +29,7 @@ https://www.unicode.org/charts/PDF/U1F00.pdf
 Following also has to be considered.
 https://unicode.org/charts/PDF/U02B0.pdf
 """
+from greektextify.text.ipa import IPA
 
 
 class GreekAlphabet:
@@ -109,35 +110,34 @@ class GreekAlphabet:
 
     ALPHABET = frozenset(CASE_LOWER | CASE_UPPER | {HYPHEN_MINUS})
 
+    # https://en.wikipedia.org/wiki/Ancient_Greek_phonology
     SOUNDS = {
-            # Breve  ̆ is short
-            # Macron  ̄ is long
-            # Circumflex  ̂ is "bent around"
-        LOWER_ALPHA: 'ɑː',  # a: ă aha, ā father
-        LOWER_BETA: 'b',  # b: beg
-        LOWER_GAMMA: 'ɡ',  # g: go; also nasal
-        LOWER_DELTA: 'd',  # d: dig
-        LOWER_EPSILON: 'ɛ',  # ĕ: met
-        LOWER_ZETA: 'z',  # z: daze
-        LOWER_ETA: 'ɛː',  # ē: fête (fr)
-        LOWER_THETA: 'ˈθ',  # th: thin
-        LOWER_IOTA: 'iː',  # ĕ meteor, ī police
-        LOWER_KAPPA: 'k',  # c, k: kin
-        LOWER_LAMBDA: 'l',  # l: let
-        LOWER_MU: 'm',  # m: met
-        LOWER_NU: 'n',  # n: net
-        LOWER_XI: 'ks',  # x: lax
-        LOWER_OMICRON: 'əʊˈ',  # ŏ: obey
-        LOWER_PI: 'p',  # p: pet
-        LOWER_RHO: 'ɹ',  # r: run
-        LOWER_SIGMA: 's',  # s: such
-        LOWER_TAU: 't',  # t: tar
-        LOWER_UPSILON: 'y',  # (u) y: ŭ (fr) tu; ū (fr) sûr
-        LOWER_PHI: 'f',  # ph: graphic
-        LOWER_CHI: 'x',  # ch: machen, ich (ge)
-        LOWER_PSI: 'p.s',  # ps: gypsym
-        LOWER_OMEGA: 'əʊ',  # ō: note
-        LOWER_DIGAMMA: 'w',
+        LOWER_ALPHA: IPA.A,
+        LOWER_BETA: IPA.B,
+        LOWER_GAMMA: IPA.G,
+        LOWER_DELTA: IPA.D,
+        LOWER_EPSILON: IPA.E,
+        LOWER_DIGAMMA: IPA.W,
+        LOWER_ZETA: IPA.D + IPA.S,
+        LOWER_ETA: IPA.E2 + IPA.LONG,
+        LOWER_THETA: IPA.T + IPA.ASPIRATED,
+        LOWER_IOTA: IPA.I,
+        LOWER_KAPPA: IPA.K,
+        LOWER_LAMBDA: IPA.L,
+        LOWER_MU: IPA.M,
+        LOWER_NU: IPA.N,
+        LOWER_XI: IPA.K + IPA.S,
+        LOWER_OMICRON: IPA.O,
+        LOWER_PI: IPA.P,
+        LOWER_RHO: IPA.R,
+        LOWER_SIGMA: IPA.S,
+        LOWER_SIGMA_FINAL: IPA.S,
+        LOWER_TAU: IPA.T,
+        LOWER_UPSILON: IPA.Y,
+        LOWER_PHI: IPA.P + IPA.ASPIRATED,
+        LOWER_CHI: IPA.K + IPA.ASPIRATED,
+        LOWER_PSI: IPA.P + IPA.S,
+        LOWER_OMEGA: IPA.O2 + IPA.LONG,
     }
 
     # https://en.wikipedia.org/wiki/Breve
