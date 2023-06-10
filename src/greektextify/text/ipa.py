@@ -29,6 +29,7 @@ from ipapy import UNICODE_TO_IPA
 # https://github.com/pettarin/ipapy/blob/master/ipapy/data/ipa.dat
 
 class IPA:
+    """All IPA phonetic sounds used in Greek phonemes."""
     LONG = UNICODE_TO_IPA["\u02D0"]
     NON_SYBALLIC = UNICODE_TO_IPA["\u032F"]
     ASPIRATED = UNICODE_TO_IPA["\u02B0"]

@@ -23,16 +23,33 @@
 from typing import Tuple
 
 from greektextify.text.glyph import GreekGlyph
+from greektextify.text.word import GreekWord
 
 
 class GlyphPattern:
 
-    def __init__(self, affix: Tuple[GreekGlyph]):
-        self._affix = affix
+    def __init__(self, affix: str):
+        self._affix = GreekWord(affix).glyphs
+
+    @property
+    def affix(self) -> Tuple[GreekGlyph]:
+        return self._affix
 
     def compare(self, word: Tuple[GreekGlyph], pos: int = 0):
         for idx in range(0, len(self._affix)):
             if not word[pos + idx].compare(self._affix[idx], caseSensitive=False):
                 return False
 
+        return True
+
+    @staticmethod
+    def overlap(a: GreekGlyph, b: GreekGlyph) -> bool:
+        """Tells if A fits inside B where the booleans counts as a set."""
+        same = True
+        for key in GreekGlyph._fields:
+            af = getattr(a, key)
+            bf = getattr(b, key)
+            same = same if not af else same if af == bf else False
+            if not same:
+                return False
         return True

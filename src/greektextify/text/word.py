@@ -27,7 +27,9 @@ from .diacritic import GreekDiacritic
 from .extended import GreekExtended
 from .glyph import GreekGlyph
 from .immaterializer import TokenImmaterializableMixin
+from .ipa import IPA
 from .midway import GreekMidway
+from .vowels import GreekVowels
 
 
 class GreekWord(TokenImmaterializableMixin):
@@ -112,6 +114,30 @@ class GreekWord(TokenImmaterializableMixin):
 
         return tuple(glyphs)
 
+    # Under development
+    @classmethod
+    def pronounce(cls, word: Tuple[GreekGlyph]):
+        """Generates an IPA phonetic key string for Koine words."""
+        ipa = ""
+        for glyph in word:
+            ipa += GreekAlphabet.SOUNDS[glyph.ch.lower()]
+            if GreekVowels.is_vowel(glyph):
+                if not GreekVowels.is_short(glyph):
+                    ipa += IPA.LONG.unicode_repr
 
+        return ipa
 
+    # Lacks support for uppercase currently
+    # Lacks support for diphthongs
+    @classmethod
+    def romanize(cls, word: Tuple[GreekGlyph]):
+        """Generates a transliterated romanized string for Koine words."""
+        roman = ""
+        for glyph in word:
+            if glyph.rough:
+                roman += 'h'
+            roman += GreekAlphabet.ROMAN[glyph.ch.lower()]
+            if glyph.subscript:
+                roman += 'i'
 
+        return roman

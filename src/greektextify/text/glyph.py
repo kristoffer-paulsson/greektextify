@@ -187,7 +187,7 @@ class GreekGlyph(NamedTuple):
         macron = False
 
         for gl in chs:
-            ch = gl.ch
+            ch = gl.ch if ch == None else ch
             psili = True if gl.psili else psili
             dasia = True if gl.dasia else dasia
             ypogegrammeni = True if gl.ypogegrammeni else ypogegrammeni

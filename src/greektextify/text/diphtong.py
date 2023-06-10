@@ -19,12 +19,46 @@
 from typing import Tuple
 
 from .alphabet import GreekAlphabet
+from .diacritic import GreekDiacritic
 from .glyph import GreekGlyph
 from .pattern import GlyphPattern
 
 
 class GreekDiphthong(GlyphPattern):
-    def __init__(self, affix: Tuple[GreekGlyph]):
+
+    ALPHA_IOTA = GreekAlphabet.LOWER_ALPHA + GreekAlphabet.LOWER_IOTA
+    EPSILON_IOTA = GreekAlphabet.LOWER_EPSILON + GreekAlphabet.LOWER_IOTA
+    OMICRON_IOTA = GreekAlphabet.LOWER_OMICRON + GreekAlphabet.LOWER_IOTA
+    # Should ALPHA_MACRON_SUBSCRIPT exist, different from Smyth $ 5, ALPHA_SUBSCRIPT is indicated.
+    ALPHA_SUBSCRIPT = GreekAlphabet.LOWER_ALPHA + GreekDiacritic.COMBINING_MACRON + GreekDiacritic.COMBINING_YPOGEGRAMMENI
+    ETA_SUBSCRIPT = GreekAlphabet.LOWER_ETA + GreekDiacritic.COMBINING_YPOGEGRAMMENI
+    OMEGA_SUBSCRIPT = GreekAlphabet.LOWER_OMEGA + GreekDiacritic.COMBINING_YPOGEGRAMMENI
+
+    ALPHA_UPSILON = GreekAlphabet.LOWER_ALPHA + GreekAlphabet.LOWER_UPSILON
+    EPSILON_UPSILON = GreekAlphabet.LOWER_EPSILON + GreekAlphabet.LOWER_UPSILON
+    OMICRON_UPSILON = GreekAlphabet.LOWER_OMICRON + GreekAlphabet.LOWER_UPSILON
+    ETA_UPSILON = GreekAlphabet.LOWER_ETA + GreekAlphabet.LOWER_UPSILON
+
+    UPSILON_IOTA = GreekAlphabet.LOWER_UPSILON + GreekAlphabet.LOWER_IOTA
+
+    IMPROPER = frozenset([
+        GlyphPattern(ALPHA_SUBSCRIPT),
+        GlyphPattern(ETA_SUBSCRIPT),
+        GlyphPattern(OMEGA_SUBSCRIPT),
+    ])
+
+    PROPER = frozenset([
+        GlyphPattern(ALPHA_IOTA),
+        GlyphPattern(EPSILON_IOTA),
+        GlyphPattern(OMICRON_IOTA),
+        GlyphPattern(ALPHA_UPSILON),
+        GlyphPattern(EPSILON_UPSILON),
+        GlyphPattern(OMICRON_UPSILON),
+        GlyphPattern(ETA_UPSILON),
+        GlyphPattern(UPSILON_IOTA),
+    ])
+
+    def __init__(self, affix: str):
         GlyphPattern.__init__(self, affix)
 
     def is_proper(self) -> bool:
@@ -35,47 +69,16 @@ class GreekDiphthong(GlyphPattern):
         """Tells if a diphthong is short (a property of vowels), based on Smyth § 5."""
         return False
 
-    def is_upper(self) -> bool:
-        """Tells if a diphthong is upper case."""
-        return self._affix[0] in GreekAlphabet.CASE_UPPER
+    @classmethod
+    def diphthong(cls, glyphs: Tuple[GreekGlyph]):
+        for pattern in cls.IMPROPER:
+            if GlyphPattern.overlap(pattern.affix[0], glyphs[0]):
+                return glyphs[0:1]
+
+        for pattern in cls.PROPER:
+            if GlyphPattern.overlap(pattern.affix[0], glyphs[0]) and GlyphPattern.overlap(pattern.affix[1], glyphs[1]):
+                return glyphs[0:2]
 
 
-GREEK_DIPHTHONG = frozenset([
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_ALPHA),
-        GreekGlyph(GreekAlphabet.LOWER_IOTA)
-    ])),
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_EPSILON),
-        GreekGlyph(GreekAlphabet.LOWER_IOTA)
-    ])),
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_OMICRON),
-        GreekGlyph(GreekAlphabet.LOWER_IOTA)
-    ])),
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_ALPHA, ypogegrammeni=True, macron=True)
-    ])),
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_ETA, ypogegrammeni=True)
-    ])),
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_OMEGA, ypogegrammeni=True)
-    ])),
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_ALPHA),
-        GreekGlyph(GreekAlphabet.LOWER_UPSILON)
-    ])),
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_EPSILON),
-        GreekGlyph(GreekAlphabet.LOWER_UPSILON)
-    ])),
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_OMICRON),
-        GreekGlyph(GreekAlphabet.LOWER_UPSILON)
-    ])),
-    GlyphPattern(tuple([
-        GreekGlyph(GreekAlphabet.LOWER_ETA),
-        GreekGlyph(GreekAlphabet.LOWER_UPSILON)
-    ])),
-])
+
+

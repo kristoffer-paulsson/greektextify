@@ -42,7 +42,8 @@ class Example(ContextObject):
             text = self._tokenizer.standardize(text)
             for token in self._tokenizer.tokenize(text):
                 if len(token) > 1:
-                    print(GreekWord(token).glyphs)
+                    glyphs = GreekWord(token).glyphs
+                    print(token, GreekWord.romanize(glyphs), GreekWord.pronounce(glyphs))
                 else:
                     print(token)
 
