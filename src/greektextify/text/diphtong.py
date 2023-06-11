@@ -1,3 +1,7 @@
+#
+# Copyright (c) 2023 by Kristoffer Paulsson <kristoffer.paulsson@talenten.se>.
+#
+# Permission to use, copy, modify, and/or distribute this software for any purpose with
 # or without fee is hereby granted, provided that the above copyright notice and this
 # permission notice appear in all copies.
 #
@@ -19,17 +23,18 @@
 from typing import Tuple
 
 from .alphabet import GreekAlphabet
+from .chunk import GlyphChunk
 from .diacritic import GreekDiacritic
 from .glyph import GreekGlyph
 from .pattern import GlyphPattern
 
 
-class GreekDiphthong(GlyphPattern):
+class GreekDiphthong(GlyphChunk):
 
     ALPHA_IOTA = GreekAlphabet.LOWER_ALPHA + GreekAlphabet.LOWER_IOTA
     EPSILON_IOTA = GreekAlphabet.LOWER_EPSILON + GreekAlphabet.LOWER_IOTA
     OMICRON_IOTA = GreekAlphabet.LOWER_OMICRON + GreekAlphabet.LOWER_IOTA
-    # Should ALPHA_MACRON_SUBSCRIPT exist, different from Smyth $ 5, ALPHA_SUBSCRIPT is indicated.
+    # Should ALPHA_MACRON_SUBSCRIPT exist, different from Smyth § 5, ALPHA_SUBSCRIPT is indicated.
     ALPHA_SUBSCRIPT = GreekAlphabet.LOWER_ALPHA + GreekDiacritic.COMBINING_MACRON + GreekDiacritic.COMBINING_YPOGEGRAMMENI
     ETA_SUBSCRIPT = GreekAlphabet.LOWER_ETA + GreekDiacritic.COMBINING_YPOGEGRAMMENI
     OMEGA_SUBSCRIPT = GreekAlphabet.LOWER_OMEGA + GreekDiacritic.COMBINING_YPOGEGRAMMENI
@@ -58,8 +63,8 @@ class GreekDiphthong(GlyphPattern):
         GlyphPattern(UPSILON_IOTA),
     ])
 
-    def __init__(self, affix: str):
-        GlyphPattern.__init__(self, affix)
+    def __init__(self, affix: Tuple[GreekGlyph]):
+        GlyphChunk.__init__(self, affix)
 
     def is_proper(self) -> bool:
         """Tells if a diphthong is inverted improper, based on Smyth § 5."""
@@ -70,14 +75,16 @@ class GreekDiphthong(GlyphPattern):
         return False
 
     @classmethod
-    def diphthong(cls, glyphs: Tuple[GreekGlyph]):
+    def diphthong(cls, glyphs: Tuple[GreekGlyph]) -> tuple['GreekDiphthong', int] | tuple[None, int]:
         for pattern in cls.IMPROPER:
             if GlyphPattern.overlap(pattern.affix[0], glyphs[0]):
-                return glyphs[0:1]
+                return cls(glyphs[0:1]), 1
 
         for pattern in cls.PROPER:
             if GlyphPattern.overlap(pattern.affix[0], glyphs[0]) and GlyphPattern.overlap(pattern.affix[1], glyphs[1]):
-                return glyphs[0:2]
+                return cls(glyphs[0:2]), 2
+
+        return None, 0
 
 
 

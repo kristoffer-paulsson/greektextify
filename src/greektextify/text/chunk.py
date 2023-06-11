@@ -19,27 +19,18 @@
 # Contributors:
 #     Kristoffer Paulsson - initial implementation
 #
-"""Greek syllable representing main letter plus diacritics."""
+"""Chunk of glyphs from a technical perspective."""
 from typing import Tuple
 
-from greektextify.text.cluster import GlyphCluster
 from greektextify.text.glyph import GreekGlyph
 
 
-class GreekSyllable(GlyphCluster):
+class GlyphChunk:
 
-    def __init__(self, onset: GlyphCluster = None, nucleus: GlyphCluster = None, coda: GlyphCluster = None):
-        GlyphCluster.__init__(self, list(filter(lambda item: item is not None, [onset, nucleus, coda])))
+    def __init__(self, affix: Tuple[GreekGlyph]):
+        self._affix = affix
 
-    # onset
-    # nucleus
-    # coda
+    @property
+    def affix(self) -> Tuple[GreekGlyph]:
+        return self._affix
 
-    # n
-    # on
-    # nc
-    # onc
-
-    @staticmethod
-    def syllabify(glyphs: Tuple[GreekGlyph]) -> tuple['GreekSyllable', int] | tuple[None, int]:
-        return None, 0

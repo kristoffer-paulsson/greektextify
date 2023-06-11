@@ -19,27 +19,11 @@
 # Contributors:
 #     Kristoffer Paulsson - initial implementation
 #
-"""Greek syllable representing main letter plus diacritics."""
-from typing import Tuple
-
-from greektextify.text.cluster import GlyphCluster
-from greektextify.text.glyph import GreekGlyph
+"""Cluster of noises from a hierarchical and organizational perspective."""
+from typing import List
 
 
-class GreekSyllable(GlyphCluster):
+class GlyphCluster:
 
-    def __init__(self, onset: GlyphCluster = None, nucleus: GlyphCluster = None, coda: GlyphCluster = None):
-        GlyphCluster.__init__(self, list(filter(lambda item: item is not None, [onset, nucleus, coda])))
-
-    # onset
-    # nucleus
-    # coda
-
-    # n
-    # on
-    # nc
-    # onc
-
-    @staticmethod
-    def syllabify(glyphs: Tuple[GreekGlyph]) -> tuple['GreekSyllable', int] | tuple[None, int]:
-        return None, 0
+    def __init__(self, cluster: List['GlyphCluster']):
+        self._cluster = cluster
