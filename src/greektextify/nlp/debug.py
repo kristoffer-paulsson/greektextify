@@ -23,8 +23,8 @@
 import unicodedata
 from typing import List
 
-from ..text.diacritic import GreekDiacritic
-from ..text.spacing import Spacing
+from greektextify.diacritic import GreekDiacritic
+from greektextify.token.spacing import Spacing
 
 
 class Debugger:

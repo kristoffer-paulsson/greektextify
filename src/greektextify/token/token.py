@@ -20,11 +20,11 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Greek tokenization."""
-from typing import List, Tuple, Type
+from typing import List, Type
 
 from ..nlp.contextual import NlpWarning
-from .immaterializer import TokenImmaterializableMixin
-from .standardizer import TokenStandardizerMixin
+from greektextify.token.immaterializer import TokenImmaterializableMixin
+from greektextify.token.standardizer import TokenStandardizerMixin
 
 
 class Tokenize:
@@ -33,7 +33,7 @@ class Tokenize:
         self._token_type = token_types
         self._standardizer = standardizer
 
-    def span_tokenize(self, text: str) -> Tuple[int, int]:
+    def span_tokenize(self, text: str) -> tuple[int, int]:
         position = 0
 
         while len(text) > position:

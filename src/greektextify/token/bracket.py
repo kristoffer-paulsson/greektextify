@@ -19,34 +19,31 @@
 # Contributors:
 #     Kristoffer Paulsson - initial implementation
 #
-"""Greek qoutation marks."""
-from typing import Tuple
-
-from .immaterializer import TokenImmaterializableMixin
+"""Brackets handling for tokenizer."""
+from greektextify.token.immaterializer import TokenImmaterializableMixin
 
 
-class GreekQuotation(TokenImmaterializableMixin):
-    """Greek quotation parser."""
+class Bracketing(TokenImmaterializableMixin):
+    """Bracketing parser."""
 
-    QUOTATION_MARK = '\u0022'
-    LEFT_POINTING_DOUBLE_ANGLE_QUOTATION_MARK = '\u00AB'
-    RIGHT_POINTING_DOUBLE_ANGLE_QUOTATION_MARK = '\u00BB'
-    LEFT_SINGLE_QUOTATION_MARK = '\u2018'
-    RIGHT_SINGLE_QUOTATION_MARK = '\u2019'
-    LEFT_DOUBLE_QUOTATION_MARK = '\u201C'
-    RIGHT_DOUBLE_QUOTATION_MARK = '\u201D'
+    LEFT_PARENTHESIS = '\u0028'
+    RIGHT_PARENTHESIS = '\u0029'
+    LEFT_SQUARE_BRACKET = '\u005B'
+    RIGHT_SQUARE_BRACKET = '\u005D'
+    LEFT_CURLY_BRACKET = '\u007B'
+    LEFT_ANGLE_BRACKET = '\u3008'
+    RIGHT_ANGLE_BRACKET = '\u3009'
 
-    QUOTE_MARKS = frozenset([
-        QUOTATION_MARK, LEFT_POINTING_DOUBLE_ANGLE_QUOTATION_MARK, RIGHT_POINTING_DOUBLE_ANGLE_QUOTATION_MARK,
-        LEFT_SINGLE_QUOTATION_MARK, RIGHT_SINGLE_QUOTATION_MARK, LEFT_DOUBLE_QUOTATION_MARK,
-        RIGHT_DOUBLE_QUOTATION_MARK
+    BRACKETS = frozenset([
+        LEFT_PARENTHESIS, RIGHT_PARENTHESIS, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET, LEFT_CURLY_BRACKET,
+        LEFT_ANGLE_BRACKET, RIGHT_ANGLE_BRACKET
     ])
 
     def __init__(self, word: str):
         self._word = word
 
     @classmethod
-    def immaterialize(cls, text: str) -> Tuple[str]:
+    def immaterialize(cls, text: str) -> tuple[str]:
         if len(text) > 0:
-            return tuple(text[0]) if text[0] in cls.QUOTE_MARKS else tuple()
+            return tuple(text[0]) if text[0] in cls.BRACKETS else tuple()
         return tuple()

@@ -20,13 +20,13 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Greek glyph representing main letter plus diacritics."""
-from typing import Tuple, NamedTuple, List
+from typing import NamedTuple, List
 
-from ..nlp.contextual import NlpWarning
-from .alphabet import GreekAlphabet
-from .diacritic import GreekDiacritic
-from .extended import GreekExtended
-from .midway import GreekMidway
+from greektextify.nlp.contextual import NlpWarning
+from greektextify.alphabet import GreekAlphabet
+from greektextify.diacritic import GreekDiacritic
+from greektextify.uni.extended import GreekExtended
+from greektextify.uni.midway import GreekMidway
 
 
 class GlyphWarning(RuntimeWarning):
@@ -142,7 +142,7 @@ class GreekGlyph(NamedTuple):
         return same
 
     @classmethod
-    def glyphen(cls, chs: str) -> Tuple["GreekGlyph", int]:
+    def glyphen(cls, chs: str) -> tuple["GreekGlyph", int]:
         position = 0
         combine = list()
 
@@ -213,6 +213,20 @@ class GreekGlyph(NamedTuple):
             True if GreekDiacritic.COMBINING_DIALYTIKA in ch else False,
             True if GreekDiacritic.COMBINING_VRACHY in ch else False,
             True if GreekDiacritic.COMBINING_MACRON in ch else False,
+        )
+
+    def __str__(self):
+        return "{}{}{}{}{}{}{}{}{}{}".format(
+            self.ch,
+            GreekDiacritic.COMBINING_PSILI if self.psili else '',
+            GreekDiacritic.COMBINING_DASIA if self.dasia else '',
+            GreekDiacritic.COMBINING_YPOGEGRAMMENI if self.ypogegrammeni else '',
+            GreekDiacritic.COMBINING_VARIA if self.varia else '',
+            GreekDiacritic.COMBINING_OXIA if self.oxia else '',
+            GreekDiacritic.COMBINING_PERISPOMENI if self.perispomeni else '',
+            GreekDiacritic.COMBINING_DIALYTIKA if self.dialytika else '',
+            GreekDiacritic.COMBINING_VRACHY if self.vrachy else '',
+            GreekDiacritic.COMBINING_MACRON if self.macron else '',
         )
 
 

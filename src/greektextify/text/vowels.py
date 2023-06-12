@@ -20,8 +20,8 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Greek alphabet vowels distinct in lowercase."""
-from .alphabet import GreekAlphabet
-from .glyph import GreekGlyph
+from greektextify.alphabet import GreekAlphabet
+from greektextify.glyph import GreekGlyph
 
 
 class GreekVowels:

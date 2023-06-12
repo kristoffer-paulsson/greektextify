@@ -20,12 +20,10 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Greek diphthongs representing two vowels or more."""
-from typing import Tuple
-
-from .alphabet import GreekAlphabet
+from greektextify.alphabet import GreekAlphabet
 from .chunk import GlyphChunk
-from .diacritic import GreekDiacritic
-from .glyph import GreekGlyph
+from greektextify.diacritic import GreekDiacritic
+from greektextify.glyph import GreekGlyph
 from .pattern import GlyphPattern
 
 
@@ -63,7 +61,7 @@ class GreekDiphthong(GlyphChunk):
         GlyphPattern(UPSILON_IOTA),
     ])
 
-    def __init__(self, affix: Tuple[GreekGlyph]):
+    def __init__(self, affix: tuple[GreekGlyph]):
         GlyphChunk.__init__(self, affix)
 
     def is_proper(self) -> bool:
@@ -75,7 +73,7 @@ class GreekDiphthong(GlyphChunk):
         return False
 
     @classmethod
-    def diphthong(cls, glyphs: Tuple[GreekGlyph]) -> tuple['GreekDiphthong', int] | tuple[None, int]:
+    def diphthong(cls, glyphs: tuple[GreekGlyph]) -> tuple['GreekDiphthong', int] | tuple[None, int]:
         for pattern in cls.IMPROPER:
             if GlyphPattern.overlap(pattern.affix[0], glyphs[0]):
                 return cls(glyphs[0:1]), 1

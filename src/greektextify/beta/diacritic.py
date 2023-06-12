@@ -20,7 +20,7 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Betacode latin->koine mapping."""
-from ..text.diacritic import GreekDiacritic
+from greektextify.diacritic import GreekDiacritic
 
 
 class BetaDiacritic(GreekDiacritic):

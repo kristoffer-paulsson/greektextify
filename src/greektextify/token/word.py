@@ -20,46 +20,20 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Greek word class segment."""
-from typing import Tuple
 
-from .alphabet import GreekAlphabet
-from .diacritic import GreekDiacritic
-from .extended import GreekExtended
-from .glyph import GreekGlyph
-from .immaterializer import TokenImmaterializableMixin
-from .ipa import IPA
-from .midway import GreekMidway
-from .vowels import GreekVowels
+from greektextify.alphabet import GreekAlphabet
+from greektextify.diacritic import GreekDiacritic
+from greektextify.uni.extended import GreekExtended
+from greektextify.glyph import GreekGlyph
+from greektextify.token.immaterializer import TokenImmaterializableMixin
+from greektextify.text.ipa import IPA
+from greektextify.uni.midway import GreekMidway
+from greektextify.text.syllable import GreekSyllable
+from greektextify.text.vowels import GreekVowels
 
 
 class GreekWord(TokenImmaterializableMixin):
     """Greek word analyzer and parsers."""
-
-    # Smyth grammar 1.1.2 *6 -> ei and ou counts as genuine if having diaresis, else if without as spurious.
-    # Smyth grammar 1.1.2 *6 + *7 -> learn
-    # Smyth grammar 1.1.2 *8 -> dipthongs ending in iota or upsilon with diaeresis are not diphtongs!
-    DIPHTHONGS_PROPER = (
-        GreekAlphabet.LOWER_ALPHA + GreekAlphabet.LOWER_IOTA,
-        GreekAlphabet.LOWER_EPSILON + GreekAlphabet.LOWER_IOTA,
-        GreekAlphabet.LOWER_OMICRON + GreekAlphabet.LOWER_IOTA,
-        GreekAlphabet.LOWER_ALPHA + GreekAlphabet.LOWER_UPSILON,
-        GreekAlphabet.LOWER_EPSILON + GreekAlphabet.LOWER_UPSILON,
-        GreekAlphabet.LOWER_OMICRON + GreekAlphabet.LOWER_UPSILON,
-        GreekAlphabet.LOWER_ETA + GreekAlphabet.LOWER_UPSILON,
-        GreekAlphabet.LOWER_UPSILON + GreekAlphabet.LOWER_IOTA
-    )
-
-    DIPHTHONGS_IMPROPER = (
-        GreekAlphabet.LOWER_ALPHA + GreekDiacritic.COMBINING_YPOGEGRAMMENI,
-        GreekAlphabet.LOWER_ETA + GreekDiacritic.COMBINING_YPOGEGRAMMENI,
-        GreekAlphabet.LOWER_OMICRON + GreekDiacritic.COMBINING_YPOGEGRAMMENI,
-    )
-
-    DIPHTHONGS = DIPHTHONGS_IMPROPER + DIPHTHONGS_IMPROPER
-
-    DIPHTHONG_IONIC = (GreekAlphabet.LOWER_OMEGA + GreekAlphabet.LOWER_UPSILON,)
-
-    # Smyth grammar 1.1.3 *9 -> All initial vowels and diphthongs must have any breathing mark.
 
     WORD_CHARS = frozenset(
         set(GreekExtended.LETTERS) | set(GreekExtended.DIACRITICS) | set(GreekMidway.LETTERS) |
@@ -70,9 +44,10 @@ class GreekWord(TokenImmaterializableMixin):
     def __init__(self, word: str):
         self._word = word
         self._glyphs = self.glyphen(word)
+        self._syllables = self.syllabify(self._glyphs)
 
     @property
-    def glyphs(self) -> Tuple[GreekGlyph]:
+    def glyphs(self) -> tuple[GreekGlyph]:
         return self._glyphs
 
     @property
@@ -84,7 +59,7 @@ class GreekWord(TokenImmaterializableMixin):
         return self._word[-1] == GreekMidway.APOSTROPHE
 
     @classmethod
-    def immaterialize(cls, text: str) -> Tuple[str]:
+    def immaterialize(cls, text: str) -> tuple[str]:
         token = list()
         for ch in text:
             if ch in cls.WORD_CHARS:
@@ -102,7 +77,7 @@ class GreekWord(TokenImmaterializableMixin):
             return tuple(token)
 
     @classmethod
-    def glyphen(cls, word: str) -> Tuple[GreekGlyph]:
+    def glyphen(cls, word: str) -> tuple[GreekGlyph]:
         position = 0
         length = len(word)-1 if word[-1] == GreekMidway.APOSTROPHE else len(word)
         glyphs = list()
@@ -114,9 +89,13 @@ class GreekWord(TokenImmaterializableMixin):
 
         return tuple(glyphs)
 
+    @classmethod
+    def syllabify(cls, glyphs: tuple[GreekGlyph]) -> tuple[GreekSyllable]:
+        pass
+
     # Under development
     @classmethod
-    def pronounce(cls, word: Tuple[GreekGlyph]):
+    def pronounce(cls, word: tuple[GreekGlyph]):
         """Generates an IPA phonetic key string for Koine words."""
         ipa = ""
         for glyph in word:
@@ -130,7 +109,7 @@ class GreekWord(TokenImmaterializableMixin):
     # Lacks support for uppercase currently
     # Lacks support for diphthongs
     @classmethod
-    def romanize(cls, word: Tuple[GreekGlyph]):
+    def romanize(cls, word: tuple[GreekGlyph]):
         """Generates a transliterated romanized string for Koine words."""
         roman = ""
         for glyph in word:

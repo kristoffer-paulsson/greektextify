@@ -24,7 +24,7 @@ import unicodedata
 from abc import ABCMeta, abstractmethod
 import contextlib
 from contextvars import ContextVar
-from typing import Tuple, List
+from typing import List
 from logging import Logger
 
 from .debug import Debugger
@@ -43,7 +43,7 @@ class ContextObject(metaclass=ABCMeta):
         return self.__err
 
     @abstractmethod
-    def location(self) -> Tuple:
+    def location(self) -> tuple:
         return NotImplemented
 
 

@@ -23,12 +23,12 @@
 
 Following for standard: http://stephanus.tlg.uci.edu/encoding/BCM.pdf
 """
-from typing import Tuple, List
+from typing import List
 
 from .alphabet import BetaAlphabet
 from .diacritic import BetaDiacritic
 from ..nlp.contextual import NlpWarning
-from ..text.glyph import GreekGlyph
+from greektextify.glyph import GreekGlyph
 
 
 class BetaGlyph(GreekGlyph):
@@ -64,7 +64,7 @@ class BetaGlyph(GreekGlyph):
         return GreekGlyph(ch, psili, dasia, ypogegrammeni, varia, oxia, perispomeni, dialytika, vrachy, macron)
 
     @classmethod
-    def glyphen(cls, chs: str) -> Tuple["GreekGlyph", int]:
+    def glyphen(cls, chs: str) -> tuple["GreekGlyph", int]:
         position = 0
         combine = list()
         letter = ''

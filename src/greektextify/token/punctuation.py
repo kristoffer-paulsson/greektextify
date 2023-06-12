@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2023 by Kristoffer Paulsson <kristoffer.paulsson@talenten.se>.
+# Copyright (c) 2022 by Kristoffer Paulsson <kristoffer.paulsson@talenten.se>.
 #
 # Permission to use, copy, modify, and/or distribute this software for any purpose with
 # or without fee is hereby granted, provided that the above copyright notice and this
@@ -19,18 +19,25 @@
 # Contributors:
 #     Kristoffer Paulsson - initial implementation
 #
-"""Betacode latin->koine mapping."""
-from greektextify.token.punctuation import GreekPunctuation
+"""Greek punctuation combining and spacing with conversion built in."""
+from greektextify.token.immaterializer import TokenImmaterializableMixin
 
 
-class BetaPunctuation(GreekPunctuation):
+class GreekPunctuation(TokenImmaterializableMixin):
+    """Greek punctuations."""
 
     FULL_STOP = '\u002E'
     COMMA = '\u002C'
-    ANO_TELEIA = '\u003A'
-    QUESTION_MARK = '\u003B'
-    EM_DASH = '\u005F'
+    QUESTION_MARK = '\u037E'
+    ANO_TELEIA = '\u0387'
+    EM_DASH = '\u2014'
 
     PUNCT_MARKS = frozenset([
-        FULL_STOP, COMMA, ANO_TELEIA, QUESTION_MARK, EM_DASH
+        FULL_STOP, COMMA, QUESTION_MARK, ANO_TELEIA, EM_DASH
     ])
+
+    @classmethod
+    def immaterialize(cls, text: str) -> tuple[str]:
+        if len(text) > 0:
+            return tuple(text[0]) if text[0] in cls.PUNCT_MARKS else tuple()
+        return tuple()

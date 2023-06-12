@@ -20,8 +20,6 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Greek detokenizer. A builder to standardized reconstruct Greek sentences, words and punctuation."""
-from typing import Tuple
-
 from ..beta.pdl_standard import PdlBetaStandard
 from ..beta.punctuation import BetaPunctuation
 from ..beta.word import BetaWord
@@ -39,7 +37,7 @@ from ..text.word import GreekWord
 class Detokenizer:
 
     @staticmethod
-    def build_word(glyphs: Tuple[GreekGlyph]) -> str:
+    def build_word(glyphs: tuple[GreekGlyph]) -> str:
         word = ''
 
         for glyph in glyphs:

@@ -22,10 +22,10 @@
 """Greek standardization of Koine unicode variants of spelling in the academic."""
 import regex
 
-from .extended import GreekExtended
-from .midway import GreekMidway
-from .punctuation import GreekPunctuation
-from .standardizer import TokenStandardizerMixin
+from greektextify.uni.extended import GreekExtended
+from greektextify.uni.midway import GreekMidway
+from greektextify.token.punctuation import GreekPunctuation
+from greektextify.token.standardizer import TokenStandardizerMixin
 
 
 class PdlUtfStandard(TokenStandardizerMixin):

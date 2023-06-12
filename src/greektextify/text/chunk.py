@@ -20,17 +20,15 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Chunk of glyphs from a technical perspective."""
-from typing import Tuple
-
-from greektextify.text.glyph import GreekGlyph
+from greektextify.glyph import GreekGlyph
 
 
 class GlyphChunk:
 
-    def __init__(self, affix: Tuple[GreekGlyph]):
+    def __init__(self, affix: tuple[GreekGlyph]):
         self._affix = affix
 
     @property
-    def affix(self) -> Tuple[GreekGlyph]:
+    def affix(self) -> tuple[GreekGlyph]:
         return self._affix
 

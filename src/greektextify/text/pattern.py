@@ -20,10 +20,8 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Glyph pattern classes."""
-from typing import Tuple
-
-from greektextify.text.glyph import GreekGlyph
-from greektextify.text.word import GreekWord
+from greektextify.glyph import GreekGlyph
+from greektextify.token.word import GreekWord
 
 
 class GlyphPattern:
@@ -32,10 +30,10 @@ class GlyphPattern:
         self._affix = GreekWord(affix).glyphs
 
     @property
-    def affix(self) -> Tuple[GreekGlyph]:
+    def affix(self) -> tuple[GreekGlyph]:
         return self._affix
 
-    def compare(self, word: Tuple[GreekGlyph], pos: int = 0):
+    def compare(self, word: tuple[GreekGlyph], pos: int = 0):
         for idx in range(0, len(self._affix)):
             if not word[pos + idx].compare(self._affix[idx], caseSensitive=False):
                 return False

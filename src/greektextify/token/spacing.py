@@ -20,9 +20,7 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Class for dealing with expected spaces from a corpora."""
-from typing import Tuple
-
-from .immaterializer import TokenImmaterializableMixin
+from greektextify.token.immaterializer import TokenImmaterializableMixin
 
 
 class Spacing(TokenImmaterializableMixin):
@@ -40,7 +38,7 @@ class Spacing(TokenImmaterializableMixin):
     ])
 
     @classmethod
-    def immaterialize(cls, text: str) -> Tuple[str]:
+    def immaterialize(cls, text: str) -> tuple[str]:
         token = list()
         for ch in text:
             if ch in cls.BLANK_SPACE:

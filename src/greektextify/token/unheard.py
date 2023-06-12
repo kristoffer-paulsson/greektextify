@@ -22,7 +22,7 @@
 """Brackets handling for tokenizer."""
 from typing import Tuple
 
-from .immaterializer import TokenImmaterializableMixin
+from greektextify.token.immaterializer import TokenImmaterializableMixin
 
 
 class GreekUnheard(TokenImmaterializableMixin):
@@ -59,7 +59,7 @@ class GreekUnheard(TokenImmaterializableMixin):
         self._word = word
 
     @classmethod
-    def immaterialize(cls, text: str) -> Tuple[str]:
+    def immaterialize(cls, text: str) -> tuple[str]:
         token = list()
         for ch in text:
             if ch in cls.UNHEARD:

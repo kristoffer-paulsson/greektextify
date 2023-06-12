@@ -20,13 +20,13 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Koine tokenizer for NLTK based on greek-textify."""
-from typing import Iterator, Tuple, List
+from typing import Iterator, List
 
 # from nltk.tokenize.api import TokenizerI
 
 from ..text.alphabet import GreekAlphabet
-from ..text.extended import GreekExtended
-from ..text.midway import GreekMidway
+from greektextify.uni.extended import GreekExtended
+from greektextify.uni.midway import GreekMidway
 from ..text.spacing import Spacing
 
 
@@ -48,7 +48,7 @@ class KoineTokenizer:
         if nltk.tokenize.internals.overridden(self.tokenize_sents):
             return self.tokenize_sents([s])[0]
 
-    def span_tokenize(self, s: str) -> Iterator[Tuple[int, int]]:
+    def span_tokenize(self, s: str) -> Iterator[tuple[int, int]]:
         chgen = enumerate(s)
         for index, ch in chgen:
             if ch in self.LETTERS:

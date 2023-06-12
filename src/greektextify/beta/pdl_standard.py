@@ -23,8 +23,8 @@
 import regex
 
 from .punctuation import BetaPunctuation
-from ..text.punctuation import GreekPunctuation
-from ..text.standardizer import TokenStandardizerMixin
+from greektextify.token.punctuation import GreekPunctuation
+from greektextify.token.standardizer import TokenStandardizerMixin
 
 
 class PdlBetaStandard(TokenStandardizerMixin):

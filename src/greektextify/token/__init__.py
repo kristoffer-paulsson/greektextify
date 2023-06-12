@@ -19,11 +19,4 @@
 # Contributors:
 #     Kristoffer Paulsson - initial implementation
 #
-"""Greek token im-materialization."""
-from typing import Tuple
-
-
-class TokenImmaterializableMixin:
-    @classmethod
-    def immaterialize(cls, text: str) -> Tuple[str]:
-        return NotImplemented
+"""Tokenization of raw input in Unicode or ASCII."""

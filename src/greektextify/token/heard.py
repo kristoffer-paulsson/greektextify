@@ -19,18 +19,31 @@
 # Contributors:
 #     Kristoffer Paulsson - initial implementation
 #
-"""Betacode latin->koine mapping."""
-from greektextify.token.punctuation import GreekPunctuation
+"""Brackets handling for tokenizer."""
+from greektextify.token.immaterializer import TokenImmaterializableMixin
 
 
-class BetaPunctuation(GreekPunctuation):
+class GreekHeard(TokenImmaterializableMixin):
+    """Bracketing parser."""
 
-    FULL_STOP = '\u002E'
-    COMMA = '\u002C'
-    ANO_TELEIA = '\u003A'
-    QUESTION_MARK = '\u003B'
-    EM_DASH = '\u005F'
+    BREVE = '\u02D8'
+    GREEK_LUNATE_SIGMA_SYMBOL = '\u03F2'
+    GREEK_SMALL_LETTER_DIGAMMA = '\u03DD'
+    GREEK_SMALL_LETTER_STIGMA = '\u03DB'
 
-    PUNCT_MARKS = frozenset([
-        FULL_STOP, COMMA, ANO_TELEIA, QUESTION_MARK, EM_DASH
+    HEARD_OF = frozenset([
+        BREVE, GREEK_LUNATE_SIGMA_SYMBOL, GREEK_SMALL_LETTER_DIGAMMA, GREEK_SMALL_LETTER_STIGMA
     ])
+
+    def __init__(self, word: str):
+        self._word = word
+
+    @classmethod
+    def immaterialize(cls, text: str) -> tuple[str]:
+        token = list()
+        for ch in text:
+            if ch in cls.HEARD_OF:
+                token.append(ch)
+            else:
+                break
+        return tuple(token)

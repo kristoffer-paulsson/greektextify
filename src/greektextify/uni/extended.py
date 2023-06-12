@@ -20,8 +20,8 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Class for dealing with extended unicode, nothing else."""
-from .alphabet import GreekAlphabet
-from .diacritic import GreekDiacritic
+from greektextify.alphabet import GreekAlphabet
+from greektextify.diacritic import GreekDiacritic
 
 
 class GreekExtended:

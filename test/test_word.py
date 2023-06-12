@@ -1,10 +1,10 @@
 from unittest import TestCase
 
-from greektextify.text.alphabet import GreekAlphabet
+from greektextify.alphabet import GreekAlphabet
 from greektextify.text.diphtong import GreekDiphthong
-from greektextify.text.glyph import GreekGlyph
+from greektextify.glyph import GreekGlyph
 from greektextify.text.vowels import GreekVowels
-from greektextify.text.word import GreekWord
+from greektextify.token.word import GreekWord
 
 
 class TestGreekWord(TestCase):
@@ -59,3 +59,6 @@ class TestGreekWord(TestCase):
         self.assertEqual(OMICRON_UPSILON, GreekDiphthong.diphthong(GreekWord(GreekDiphthong.OMICRON_UPSILON).glyphs)[0].affix)
         self.assertEqual(ETA_UPSILON, GreekDiphthong.diphthong(GreekWord(GreekDiphthong.ETA_UPSILON).glyphs)[0].affix)
         self.assertEqual(UPSILON_IOTA, GreekDiphthong.diphthong(GreekWord(GreekDiphthong.UPSILON_IOTA).glyphs)[0].affix)
+
+    def test_smyth138_148(self):
+        pass

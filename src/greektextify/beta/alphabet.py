@@ -20,7 +20,7 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Betacode latin->koine mapping."""
-from ..text.alphabet import GreekAlphabet
+from greektextify.alphabet import GreekAlphabet
 
 
 class BetaAlphabet(GreekAlphabet):

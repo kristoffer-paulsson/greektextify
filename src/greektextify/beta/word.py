@@ -23,14 +23,12 @@
 
 Following for standard: http://stephanus.tlg.uci.edu/encoding/BCM.pdf
 """
-from typing import Tuple
-
-from .alphabet import BetaAlphabet
-from .diacritic import BetaDiacritic
-from .glyph import BetaGlyph
-from .midway import BetaMidway
-from ..text.glyph import GreekGlyph
-from ..text.word import GreekWord
+from greektextify.beta.alphabet import BetaAlphabet
+from greektextify.beta.diacritic import BetaDiacritic
+from greektextify.beta.glyph import BetaGlyph
+from greektextify.beta.midway import BetaMidway
+from greektextify.glyph import GreekGlyph
+from greektextify.token.word import GreekWord
 
 
 class BetaWord(GreekWord):
@@ -44,7 +42,7 @@ class BetaWord(GreekWord):
         GreekWord.__init__(self, word)
 
     @property
-    def glyphs(self) -> Tuple[GreekGlyph]:
+    def glyphs(self) -> tuple[GreekGlyph]:
         return self._glyphs
 
     @property
@@ -56,7 +54,7 @@ class BetaWord(GreekWord):
         return self._word[-1] == BetaMidway.APOSTROPHE
 
     @classmethod
-    def immaterialize(cls, text: str) -> Tuple[str]:
+    def immaterialize(cls, text: str) -> tuple[str]:
         token = list()
         for ch in text.upper():
             if ch in cls.WORD_CHARS:
@@ -74,13 +72,13 @@ class BetaWord(GreekWord):
             return tuple(token)
 
     @classmethod
-    def glyphen(cls, word: str) -> Tuple[GreekGlyph]:
+    def glyphen(cls, word: str) -> tuple[GreekGlyph]:
         position = 0
         length = len(word)-1 if word[-1] == BetaMidway.APOSTROPHE else len(word)
         glyphs = list()
 
         while position != length:
-            glyph, size = BetaGlyph.glyphen(word[position:])
+            glyph, size = BetaGlyph.glyphen(word[position:].upper())
             glyphs.append(glyph)
             position += size
 

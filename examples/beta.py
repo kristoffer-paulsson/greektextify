@@ -10,7 +10,7 @@ from greektextify.token.punctuation import GreekPunctuation
 from greektextify.token.quotation import GreekQuotation
 from greektextify.token.spacing import Spacing
 from greektextify.token.token import Tokenize
-from greektextify.token.word import GreekWord
+from greektextify.beta.word import BetaWord
 
 
 class Example(ContextObject):
@@ -22,7 +22,7 @@ class Example(ContextObject):
         ContextObject.__init__(self)
         self._path = path
         self._tokenizer = Tokenize([
-            GreekWord,
+            BetaWord,
             Bracketing,
             GreekPunctuation,
             GreekQuotation,
@@ -42,14 +42,14 @@ class Example(ContextObject):
             text = self._tokenizer.standardize(text)
             for token in self._tokenizer.tokenize(text):
                 if len(token) > 1:
-                    # glyphs = GreekWord(token).glyphs
+                    # glyphs = BetaWord.glyphen(token)
                     # print(token, GreekWord.romanize(glyphs), GreekWord.pronounce(glyphs))
-                    print(token)
+                    print("".join([str(glyph) for glyph in BetaWord.glyphen(token)]))
                 else:
                     print(token)
 
 
 if __name__ == '__main__':
-    example = Example(PurePath('john_3.txt'))
+    example = Example(PurePath('jul_or_4.txt'))
     with NlpContext(example):
         example.tokenize()

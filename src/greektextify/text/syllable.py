@@ -20,10 +20,8 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Greek syllable representing main letter plus diacritics."""
-from typing import Tuple
-
 from greektextify.text.cluster import GlyphCluster
-from greektextify.text.glyph import GreekGlyph
+from greektextify.glyph import GreekGlyph
 
 
 class GreekSyllable(GlyphCluster):
@@ -41,5 +39,5 @@ class GreekSyllable(GlyphCluster):
     # onc
 
     @staticmethod
-    def syllabify(glyphs: Tuple[GreekGlyph]) -> tuple['GreekSyllable', int] | tuple[None, int]:
+    def syllabify(glyphs: tuple[GreekGlyph]) -> tuple['GreekSyllable', int] | tuple[None, int]:
         return None, 0
