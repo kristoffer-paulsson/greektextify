@@ -64,6 +64,14 @@ class GreekDiphthong(GlyphChunk):
     def __init__(self, affix: tuple[GreekGlyph]):
         GlyphChunk.__init__(self, affix)
 
+    def is_genuine(self) -> bool:
+        """Tells whether EPSILON_IOTA or OMICRON_UPSILON are genuine or spurious, based on Smyth § 6."""
+        raise NotImplemented()
+
+    def is_spurious(self) -> bool:
+        """Tells whether EPSILON_IOTA or OMICRON_UPSILON are genuine or spurious, based on Smyth § 6."""
+        raise NotImplemented()
+
     def is_proper(self) -> bool:
         """Tells if a diphthong is inverted improper, based on Smyth § 5."""
         return not self._affix[0].ypogegrammeni
@@ -77,6 +85,10 @@ class GreekDiphthong(GlyphChunk):
         for pattern in cls.IMPROPER:
             if GlyphPattern.overlap(pattern.affix[0], glyphs[0]):
                 return cls(glyphs[0:1]), 1
+
+        # According to Smyth § 8, if a diphthong has diaeresis over iota or upsilon, those are distinguished vowels.
+        if glyphs[1].dialytika:
+            return None, 0
 
         for pattern in cls.PROPER:
             if GlyphPattern.overlap(pattern.affix[0], glyphs[0]) and GlyphPattern.overlap(pattern.affix[1], glyphs[1]):

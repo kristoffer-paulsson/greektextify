@@ -3,7 +3,7 @@ from unittest import TestCase
 from greektextify.alphabet import GreekAlphabet
 from greektextify.text.diphtong import GreekDiphthong
 from greektextify.glyph import GreekGlyph
-from greektextify.text.vowels import GreekVowels
+from greektextify.text.vowels import GreekVowels, IPAVowelLength
 from greektextify.token.word import GreekWord
 
 
@@ -11,9 +11,17 @@ class TestGreekWord(TestCase):
     """The purpose is to only test greek spelling and no whatsoever function or logic."""
 
     def test_smyth4(self):
-        length = (True, True, False, True, True, True, False)  # True equals short
+        length = (
+            IPAVowelLength.SHORT,
+            IPAVowelLength.SHORT,
+            IPAVowelLength.LONG,
+            IPAVowelLength.SHORT,
+            IPAVowelLength.SHORT,
+            IPAVowelLength.SHORT,
+            IPAVowelLength.LONG
+        )  # True equals short
         for vowel, short in zip(GreekAlphabet.VOWEL_UPPER, length):
-            self.assertEqual(GreekVowels.is_short(GreekGlyph(vowel)), short)
+            self.assertEqual(GreekVowels.vowel_length(GreekGlyph(vowel)), short)
 
         VAR_BREVE = (
             GreekGlyph(GreekAlphabet.UPPER_ALPHA, macron=True),
@@ -21,7 +29,7 @@ class TestGreekWord(TestCase):
             GreekGlyph(GreekAlphabet.UPPER_UPSILON, macron=True),
         )
         for vowel in VAR_BREVE:
-            self.assertEqual(GreekVowels.is_short(vowel), False)
+            self.assertEqual(GreekVowels.vowel_length(vowel), IPAVowelLength.LONG)
 
         CIRCUMFLEX = (
             GreekGlyph(GreekAlphabet.UPPER_ALPHA, perispomeni=True),
@@ -31,7 +39,7 @@ class TestGreekWord(TestCase):
             GreekGlyph(GreekAlphabet.LOWER_OMEGA, perispomeni=True),
         )
         for vowel in CIRCUMFLEX:
-            self.assertEqual(GreekVowels.is_short(vowel), False)
+            self.assertEqual(GreekVowels.vowel_length(vowel), IPAVowelLength.LONG)
 
     def test_smyth5(self):
         ALPHA_IOTA = tuple([GreekGlyph(GreekAlphabet.LOWER_ALPHA), GreekGlyph(GreekAlphabet.LOWER_IOTA)])

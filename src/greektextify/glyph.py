@@ -96,7 +96,7 @@ class GreekGlyph(NamedTuple):
         return self.perispomeni
 
     @property
-    def diaresis(self) -> bool:
+    def diaeresis(self) -> bool:
         """Another name for dialytika."""
         return self.dialytika
 
