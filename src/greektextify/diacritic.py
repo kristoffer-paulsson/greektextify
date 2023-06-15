@@ -47,6 +47,16 @@ class GreekDiacritic:
     COMBINING_YPOGEGRAMMENI = '\u0345'
     COMBINING_PROSGEGRAMMENI = COMBINING_YPOGEGRAMMENI  # Backward compatibility
 
+    # Digital unicode is not prepared for Semivowels as in Smyth § 20.a
+    # Only applies to Semivowel IOTA and UPSILON
+    COMBINING_INVERTED_BREVE_BELOW = '\u032F'  # Unsyballic, Semivocalic
+
+    # Suspected
+    COMBINING_CARON = '\u030C'
+    COMBINING_DOUBLE_BREVE_BELOW = '\u035C'  # Synizesis
+    COMBINING_RING_BELOW = '\u0325'  # Syllabic/sonant LAMBDA
+
+
     DEBUG_CIRCLE = '\u20DD'  # Symbol for combining unicode character debugging
 
     DIACRITICS = frozenset([
