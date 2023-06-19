@@ -21,12 +21,11 @@
 #
 """Greek word alteration and analyzation."""
 from greektextify.glyph import GreekGlyph
-from greektextify.nlp.contextual import NlpWarning
-from greektextify.text.cdouble import DoubleConsonant
 from greektextify.text.chunk import GlyphChunk
 from greektextify.text.cluster import GlyphCluster
 from greektextify.text.consonant import GreekConsonant
 from greektextify.text.diphtong import GreekDiphthong
+from greektextify.text.rmedial import MedialRho
 from greektextify.text.ngamma import GammaNasal
 from greektextify.text.vowel import GreekVowel
 
@@ -37,7 +36,7 @@ class GreekWord(GlyphCluster):
         (GreekDiphthong, 1),
         (GreekVowel, 1),
         (GammaNasal, 2),
-        (DoubleConsonant, 2),
+        (MedialRho, 2),
         (GreekConsonant, 1),
     )
 
@@ -45,12 +44,12 @@ class GreekWord(GlyphCluster):
         GlyphCluster.__init__(self, syllables)
 
     @classmethod
-    def analyze(cls, glyphs: tuple[GreekGlyph]) -> tuple[GlyphChunk]:
+    def analyze(cls, glyphs: tuple[GreekGlyph, ...]) -> tuple[GlyphChunk, ...]:
         initial = True
         chunks = list()
         subject = glyphs
 
-        while len(subject):
+        while subject:
             for scanner, min_req in cls.SCAN_ANALYZER:
                 if len(subject) < min_req:
                     continue
@@ -61,9 +60,9 @@ class GreekWord(GlyphCluster):
                     initial = False
                     subject = subject[size:]
                     break
-            # raise NlpWarning(*NlpWarning.PROCESS_ERROR)
-        chunks = tuple(chunks)
-        return chunks
+            # if tmp == length:
+            #    raise NlpWarning(*NlpWarning.PROCESS_ERROR, info={'subject': subject})
+        return tuple(chunks)
 
     @classmethod
     def syllabify(cls, chunks: tuple[GlyphChunk]) -> tuple[GlyphCluster]:

@@ -19,7 +19,7 @@
 # Contributors:
 #     Kristoffer Paulsson - initial implementation
 #
-"""Gamma Nasal consonant cluster."""
+"""Medial Rho consonant cluster."""
 from greektextify.alphabet import GreekAlphabet
 from greektextify.glyph import GreekGlyph
 from greektextify.text.chunk import GlyphChunk
@@ -27,24 +27,15 @@ from greektextify.text.consonant import GreekConsonant
 from greektextify.text.pattern import GlyphPattern
 
 
-class GammaNasal(GreekConsonant):
-    GAMMA_KAPPA = GreekAlphabet.LOWER_GAMMA + GreekAlphabet.LOWER_KAPPA
-    GAMMA_GAMMA = GreekAlphabet.LOWER_GAMMA + GreekAlphabet.LOWER_GAMMA
-    GAMMA_CHI = GreekAlphabet.LOWER_GAMMA + GreekAlphabet.LOWER_CHI
-    GAMMA_XI = GreekAlphabet.LOWER_GAMMA + GreekAlphabet.LOWER_XI
+class MedialRho(GreekConsonant):
+    RHO_RHO = GreekAlphabet.LOWER_RHO + GreekAlphabet.LOWER_RHO
 
-    GAMMA_NASAL = frozenset([
-        GlyphPattern(GAMMA_KAPPA),
-        GlyphPattern(GAMMA_GAMMA),
-        GlyphPattern(GAMMA_CHI),
-        GlyphPattern(GAMMA_XI)
+    MEDIAL_RHO = frozenset([
+        GlyphPattern(RHO_RHO),
     ])
 
     ALALC2010 = {
-        GAMMA_KAPPA: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_NU] + GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_KAPPA],
-        GAMMA_GAMMA: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_NU] + GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_GAMMA],
-        GAMMA_CHI: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_NU] + GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_CHI],
-        GAMMA_XI: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_NU] + GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_XI],
+        RHO_RHO: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_RHO] + GreekAlphabet.ALALC2010[GreekAlphabet.ROUGH],
     }
 
     def __init__(self, chunk: tuple[GreekGlyph], pattern: GlyphPattern, initial: bool = False):
@@ -58,7 +49,7 @@ class GammaNasal(GreekConsonant):
     @classmethod
     def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
         cluster = glyphs[0:2]
-        for pattern in cls.GAMMA_NASAL:
+        for pattern in cls.MEDIAL_RHO:
             if pattern.same_lower(cluster):
                 return cls(cluster, pattern, initial), 2
         return None, 0

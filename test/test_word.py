@@ -56,21 +56,28 @@ class TestGreekWord(TestCase):
 
         UPSILON_IOTA = tuple([GreekGlyph(GreekAlphabet.LOWER_UPSILON), GreekGlyph(GreekAlphabet.LOWER_IOTA)])
 
-        self.assertEqual(ALPHA_IOTA, GreekDiphthong.scan(GreekWord(GreekDiphthong.ALPHA_IOTA).glyphs, )[0].chunk)
-        self.assertEqual(EPSILON_IOTA, GreekDiphthong.scan(GreekWord(GreekDiphthong.EPSILON_IOTA).glyphs, )[0].chunk)
-        self.assertEqual(OMICRON_IOTA, GreekDiphthong.scan(GreekWord(GreekDiphthong.OMICRON_IOTA).glyphs, )[0].chunk)
+        self.assertEqual(ALPHA_IOTA, GreekDiphthong.scan(
+            GreekWord.glyphen(GreekDiphthong.ALPHA_IOTA))[0].chunk)
+        self.assertEqual(EPSILON_IOTA, GreekDiphthong.scan(
+            GreekWord.glyphen(GreekDiphthong.EPSILON_IOTA))[0].chunk)
+        self.assertEqual(OMICRON_IOTA, GreekDiphthong.scan(
+            GreekWord.glyphen(GreekDiphthong.OMICRON_IOTA))[0].chunk)
         self.assertEqual(ALPHA_SUBSCRIPT, GreekDiphthong.scan(
-            GreekWord(GreekDiphthong.ALPHA_SUBSCRIPT).glyphs, )[0].chunk)
-        self.assertEqual(ETA_SUBSCRIPT, GreekDiphthong.scan(GreekWord(GreekDiphthong.ETA_SUBSCRIPT).glyphs, )[0].chunk)
+            GreekWord.glyphen(GreekDiphthong.ALPHA_SUBSCRIPT))[0].chunk)
+        self.assertEqual(ETA_SUBSCRIPT, GreekDiphthong.scan(
+            GreekWord.glyphen(GreekDiphthong.ETA_SUBSCRIPT))[0].chunk)
         self.assertEqual(OMEGA_SUBSCRIPT, GreekDiphthong.scan(
-            GreekWord(GreekDiphthong.OMEGA_SUBSCRIPT).glyphs, )[0].chunk)
-        self.assertEqual(ALPHA_UPSILON, GreekDiphthong.scan(GreekWord(GreekDiphthong.ALPHA_UPSILON).glyphs, )[0].chunk)
+            GreekWord.glyphen(GreekDiphthong.OMEGA_SUBSCRIPT))[0].chunk)
+        self.assertEqual(ALPHA_UPSILON, GreekDiphthong.scan(
+            GreekWord.glyphen(GreekDiphthong.ALPHA_UPSILON))[0].chunk)
         self.assertEqual(EPSILON_UPSILON, GreekDiphthong.scan(
-            GreekWord(GreekDiphthong.EPSILON_UPSILON).glyphs, )[0].chunk)
+            GreekWord.glyphen(GreekDiphthong.EPSILON_UPSILON))[0].chunk)
         self.assertEqual(OMICRON_UPSILON, GreekDiphthong.scan(
-            GreekWord(GreekDiphthong.OMICRON_UPSILON).glyphs, )[0].chunk)
-        self.assertEqual(ETA_UPSILON, GreekDiphthong.scan(GreekWord(GreekDiphthong.ETA_UPSILON).glyphs, )[0].chunk)
-        self.assertEqual(UPSILON_IOTA, GreekDiphthong.scan(GreekWord(GreekDiphthong.UPSILON_IOTA).glyphs, )[0].chunk)
+            GreekWord.glyphen(GreekDiphthong.OMICRON_UPSILON))[0].chunk)
+        self.assertEqual(ETA_UPSILON, GreekDiphthong.scan(
+            GreekWord.glyphen(GreekDiphthong.ETA_UPSILON))[0].chunk)
+        self.assertEqual(UPSILON_IOTA, GreekDiphthong.scan(
+            GreekWord.glyphen(GreekDiphthong.UPSILON_IOTA))[0].chunk)
 
     def text_smyth6(self):
         pass

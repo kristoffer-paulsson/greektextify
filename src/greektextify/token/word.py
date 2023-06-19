@@ -56,7 +56,7 @@ class GreekWord(TokenImmaterializableMixin):
 
     @property
     def apostrophe(self) -> bool:
-        return self._word[-1] == GreekMidway.APOSTROPHE
+        return self._word[-1] == GreekAlphabet.APOSTROPHE
 
     @classmethod
     def immaterialize(cls, text: str) -> tuple[str]:

@@ -51,7 +51,7 @@ class BetaWord(GreekWord):
 
     @property
     def apostrophe(self) -> bool:
-        return self._word[-1] == BetaMidway.APOSTROPHE
+        return self._word[-1] == BetaAlphabet.APOSTROPHE
 
     @classmethod
     def immaterialize(cls, text: str) -> tuple[str]:
@@ -74,7 +74,8 @@ class BetaWord(GreekWord):
     @classmethod
     def glyphen(cls, word: str) -> tuple[GreekGlyph]:
         position = 0
-        length = len(word)-1 if word[-1] == BetaMidway.APOSTROPHE else len(word)
+        # length = len(word)-1 if word[-1] == BetaMidway.APOSTROPHE else len(word)
+        length = len(word)
         glyphs = list()
 
         while position != length:

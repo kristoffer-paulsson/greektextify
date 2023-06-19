@@ -1,9 +1,11 @@
 from pathlib import PurePath
+from pprint import pp
 from typing import Tuple
 
 import regex as regex
 
 from greektextify.nlp.contextual import NlpOperation, NlpContext, ContextObject
+from greektextify.roman.word import GreekWordToken
 from greektextify.token.bracket import Bracketing
 from greektextify.token.pdl_standard import PdlUtfStandard
 from greektextify.token.punctuation import GreekPunctuation
@@ -40,18 +42,18 @@ class Example(ContextObject):
 
     @NlpOperation()
     def tokenize(self):
+        tokens = list()
         for text in self._parse():
             text = self._tokenizer.standardize(text)
             for token in self._tokenizer.tokenize(text):
-                if len(token) > 1:
-                    # glyphs = GreekWord(token).glyphs
-                    # print(token, GreekWord.romanize(glyphs), GreekWord.pronounce(glyphs))
-                    print(token, GW2.analyze(GreekWord.glyphen(token)))
+                if len(token) > 1 or token.isalpha():
+                    tokens.append(GreekWordToken(GW2.analyze(GreekWord.glyphen(token))).__str__())
                 else:
-                    print(token)
+                    tokens.append(token)
+        return " ".join(tokens)
 
 
 if __name__ == '__main__':
     example = Example(PurePath('john_3.txt'))
     with NlpContext(example):
-        example.tokenize()
+        pp(example.tokenize())

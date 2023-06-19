@@ -175,9 +175,34 @@ class GreekConsonant(GlyphChunk, AbstractGlyphSearch):
         GreekAlphabet.LOWER_SIGMA_FINAL, GreekAlphabet.LOWER_DIGAMMA  # Necessary consonants
     ])
 
+    def is_rough(self) -> bool:
+        """Tells if said rho has rough breathing.
+        Based on Smyth § 13."""
+        glyph = self.chunk[0]
+        if self.initial:
+            return glyph.lower == GreekAlphabet.LOWER_RHO
+        else:
+            return glyph.lower == GreekAlphabet.LOWER_RHO and glyph.asper
+
+    def is_smooth(self) -> bool:
+        """Tells if said rho has snooth breathing.
+        Based on Smyth § 13."""
+        glyph = self.chunk[0]
+        return glyph.lower == GreekAlphabet.LOWER_RHO and glyph.lenis
+
+    def check_asper_lenis(self) -> bool:
+        """Checks that asper and lenis doesn't apply on the same time for rho, and never else for a consonant.
+        Should be considered a grammatical error, inverted from Smyth § 13."""
+        glyph = self.chunk[0]
+        if glyph.lower == GreekAlphabet.LOWER_RHO:
+            return not (glyph.asper and glyph.lenis)
+        else:
+            return not (glyph.asper or glyph.lenis)
+
     @classmethod
     def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
-        if glyphs[0].lower in cls.CONSONANTS:
-            return cls(glyphs[0:1], initial), 1
-        else:
-            return None, 0
+        cluster = glyphs[0]
+        for consonant in cls.CONSONANTS:
+            if cluster.lower == consonant:
+                return cls(glyphs[0:1], initial), 1
+        return None, 0

@@ -114,36 +114,8 @@ class GreekGlyph(NamedTuple):
     def lower(self) -> str:
         return self.ch.lower()
 
-    def compare(
-            self,
-            glyph: 'GreekGlyph',
-            caseSensitive: bool = True,
-            accent: bool = True,
-            rough: bool = True,
-            subscript: bool = True
-    ) -> bool:
-        same = True
-        if caseSensitive:
-            same = same if self.ch == glyph.ch else False
-        else:
-            same = same if self.ch.lower() == glyph.ch.lower() else False
-
-        if rough:
-            same = same if not glyph.dasia else self.dasia == glyph.dasia
-
-        if accent:
-            same = same if not glyph.psili else self.psili == glyph.psili
-            same = same if not glyph.varia else self.varia == glyph.varia
-            same = same if not glyph.oxia else self.oxia == glyph.oxia
-            same = same if not glyph.perispomeni else self.perispomeni == glyph.perispomeni
-            same = same if not glyph.dialytika else self.dialytika == glyph.dialytika
-            same = same if not glyph.vrachy else self.vrachy == glyph.vrachy
-            same = same if not glyph.macron else self.macron == glyph.macron
-
-        if subscript:
-            same = same if not glyph.ypogegrammeni else self.ypogegrammeni == glyph.ypogegrammeni
-
-        return same
+    def same(self, other: 'GreekGlyph') -> bool:
+        return self.lower == other.lower
 
     @classmethod
     def glyphen(cls, chs: str) -> tuple["GreekGlyph", int]:

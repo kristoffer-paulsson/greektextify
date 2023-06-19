@@ -69,6 +69,7 @@ class BetaAlphabet(GreekAlphabet):
     ])
 
     HYPHEN_MINUS = '\u002D'
+    APOSTROPHE = '\u0027'
 
     ALPHABET = frozenset(LATIN_CHARS | {HYPHEN_MINUS})
 

@@ -111,6 +111,8 @@ class GreekAlphabet:
 
     ALPHABET = frozenset(CASE_LOWER | CASE_UPPER | {HYPHEN_MINUS} | {APOSTROPHE})
 
+    ROUGH = 1
+
     # https://en.wikipedia.org/wiki/Ancient_Greek_phonology
     SOUNDS = {
         LOWER_ALPHA: IPA.A.unicode_repr,
@@ -141,7 +143,7 @@ class GreekAlphabet:
         LOWER_OMEGA: IPA.O2.unicode_repr,  #  + IPA.LONG,  # Naturally long but grammar can modify that
     }
 
-    ROMAN = {
+    ALALC2010 = {
         LOWER_ALPHA: 'a',
         LOWER_BETA: 'b',
         LOWER_GAMMA: 'g',
@@ -168,6 +170,10 @@ class GreekAlphabet:
         LOWER_CHI: 'ch',
         LOWER_PSI: 'ps',
         LOWER_OMEGA: 'ō',
+
+        ROUGH: 'h',
+        HYPHEN_MINUS: HYPHEN_MINUS,
+        APOSTROPHE: APOSTROPHE,
     }
 
     # https://en.wikipedia.org/wiki/Breve

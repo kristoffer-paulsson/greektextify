@@ -54,6 +54,7 @@ class NlpWarning(UserWarning):
     COMBINE_ERROR = ("Betacode invalid due to multiple combination in glyphening.", 102)
     NOT_VOWEL = ("Glyph is not a vowel.", 103)
     PROCESS_ERROR = ("Scanner in infinite loop error.", 104)
+    NOT_DIPHTHONG = ("Glyph cluster not a diphthong", 105)
 
     code: int
     info: dict

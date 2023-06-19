@@ -74,6 +74,13 @@ class BetaGlyph(GreekGlyph):
             upper = True
             position += 1
 
+        for ch in chs[position:]:  # Initial diacritics
+            if ch in BetaDiacritic.DIACRITICS:
+                combine.append(cls.diacritic(BetaDiacritic.BETA_DIACRITICS[ch]))
+                position += 1
+            else:
+                break
+
         if chs[position] in BetaAlphabet.LATIN_CHARS:
             letter += chs[position]
             position += 1
@@ -86,7 +93,7 @@ class BetaGlyph(GreekGlyph):
         if letter in BetaAlphabet.BETA_LETTERS:
             combine.append(cls.diacritic(BetaAlphabet.BETA_LETTERS[letter][0 if upper else 1]))
 
-        for ch in chs[position:]:
+        for ch in chs[position:]:  # In word diacritics
             if ch in BetaDiacritic.DIACRITICS:
                 combine.append(cls.diacritic(BetaDiacritic.BETA_DIACRITICS[ch]))
                 position += 1

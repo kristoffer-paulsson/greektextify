@@ -45,6 +45,9 @@ class GreekDiphthong(GreekVowel):
 
     UPSILON_IOTA = GreekAlphabet.LOWER_UPSILON + GreekAlphabet.LOWER_IOTA
 
+    # Not mentioned in Smyth until found
+    # OMEGA_UPSILON = GreekAlphabet.LOWER_OMEGA + GreekAlphabet.LOWER_UPSILON
+
     IMPROPER = frozenset([
         GlyphPattern(ALPHA_SUBSCRIPT),
         GlyphPattern(ETA_SUBSCRIPT),
@@ -60,10 +63,51 @@ class GreekDiphthong(GreekVowel):
         GlyphPattern(OMICRON_UPSILON),
         GlyphPattern(ETA_UPSILON),
         GlyphPattern(UPSILON_IOTA),
+        # GlyphPattern(OMEGA_UPSILON)
     ])
 
-    # def __init__(self, affix: tuple[GreekGlyph]):
-    #    GlyphChunk.__init__(self, affix)
+    ALALC2010 = {
+        ALPHA_IOTA: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_ALPHA] + GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_IOTA],
+        EPSILON_IOTA: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_EPSILON] + GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_IOTA],
+        OMICRON_IOTA: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_OMICRON] + GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_IOTA],
+        ALPHA_SUBSCRIPT: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_ALPHA],
+        ETA_SUBSCRIPT: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_ETA],
+        OMEGA_SUBSCRIPT: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_OMEGA],
+        ALPHA_UPSILON: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_ALPHA] + 'u',
+        EPSILON_UPSILON: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_EPSILON] + 'u',
+        OMICRON_UPSILON: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_OMICRON] + 'u',
+        ETA_UPSILON: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_ETA] + 'u',
+        UPSILON_IOTA: 'u' + GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_IOTA],
+        # OMEGA_UPSILON: GreekAlphabet.ALALC2010[GreekAlphabet.LOWER_OMEGA] + 'u',
+    }
+
+    def __init__(self, chunk: tuple[GreekGlyph], pattern: GlyphPattern, initial: bool = False):
+        super().__init__(chunk, initial)
+        self._pattern = pattern
+
+    @property
+    def pattern(self) -> GlyphPattern:
+        return self._pattern
+
+    def _get_diacritic_glyph(self) -> GreekGlyph:
+        """Gives the glyph which should have the diacritics.
+        Based in Smyth § 11 and 152."""
+        if self._pattern.raw == self.ALPHA_IOTA and self.chunk[0].ch == GreekAlphabet.UPPER_ALPHA:
+            return self.chunk[0]
+        elif self.is_proper():
+            return self.chunk[1]
+        else:
+            return self.chunk[0]
+
+    def is_rough(self) -> bool:
+        """Tells if said vowel has rough breathing.
+        Based on Smyth § 9 and 11."""
+        return self._get_diacritic_glyph().asper
+
+    def is_smooth(self) -> bool:
+        """Tells if said vowel has rough breathing.
+        Based on Smyth § 9 and 11."""
+        return self._get_diacritic_glyph().lenis
 
     def is_genuine(self) -> bool:
         """Tells whether EPSILON_IOTA or OMICRON_UPSILON are genuine or spurious, based on Smyth § 6."""
@@ -75,7 +119,7 @@ class GreekDiphthong(GreekVowel):
 
     def is_proper(self) -> bool:
         """Tells if a diphthong is inverted improper, based on Smyth § 5."""
-        return not self._chunk[0].ypogegrammeni
+        return not self._chunk[0].subscript
 
     def is_short(self) -> bool:
         """Tells if a diphthong is short (a property of vowels), based on Smyth § 5."""
@@ -83,20 +127,22 @@ class GreekDiphthong(GreekVowel):
 
     @classmethod
     def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
+        cluster = glyphs[0:1]
         for pattern in cls.IMPROPER:
-            if GlyphPattern.overlap(pattern.affix[0], glyphs[0]):
-                return cls(glyphs[0:1], initial), 1
+            if pattern.same(cluster):
+                return cls(glyphs[0:1], pattern, initial), 1
 
         if len(glyphs) <= 1:
             return None, 0
 
         # According to Smyth § 8, if a diphthong has diaeresis over iota or upsilon, those are distinguished vowels.
-        if glyphs[1].dialytika:
+        if glyphs[1].diaeresis:
             return None, 0
 
+        cluster = glyphs[0:2]
         for pattern in cls.PROPER:
-            if GlyphPattern.overlap(pattern.affix[0], glyphs[0]) and GlyphPattern.overlap(pattern.affix[1], glyphs[1]):
-                return cls(glyphs[0:2], initial), 2
+            if pattern.same_lower(cluster):
+                return cls(cluster, pattern, initial), 2
 
         return None, 0
 

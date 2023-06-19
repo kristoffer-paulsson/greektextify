@@ -20,10 +20,11 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Class for dealing with midway unicode, nothing else."""
+from greektextify.beta.alphabet import BetaAlphabet
 
 
 class BetaMidway:
 
-    APOSTROPHE = '\u0027'
+    # APOSTROPHE = '\u0027'
 
-    MODIFIERS = frozenset([APOSTROPHE])
+    MODIFIERS = frozenset([BetaAlphabet.APOSTROPHE])

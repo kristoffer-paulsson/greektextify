@@ -37,6 +37,9 @@ class GlyphChunk:
     def initial(self) -> bool:
         return self._initial
 
+    def is_upper(self) -> bool:
+        return self._chunk[0].ch.isupper()
+
     def __repr__(self) -> str:
         return str("".join(str(x) for x in self._chunk))
 

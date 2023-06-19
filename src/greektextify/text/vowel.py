@@ -27,7 +27,6 @@ from greektextify.glyph import GreekGlyph
 from greektextify.nlp.contextual import NlpWarning
 from greektextify.text.chunk import GlyphChunk
 from greektextify.text.scan import AbstractGlyphSearch
-from greektextify.uni.midway import GreekMidway
 
 
 class IPAVowelLength(Enum):
@@ -128,6 +127,44 @@ class GreekVowel(GlyphChunk, AbstractGlyphSearch):
 
     VOWELS = frozenset(set(L_SHORT) | set(L_LONG) | set(L_VARIABLE) | {GreekAlphabet.APOSTROPHE})
 
+    def _get_diacritic_glyph(self) -> GreekGlyph:
+        """Gives the current vowel."""
+        return self.chunk[0]
+
+    def is_upper(self) -> bool:
+        return self.chunk[0].ch.isupper()
+
+    def is_rough(self) -> bool:
+        """Tells if said vowel has rough breathing.
+        Based on Smyth § 9 and 10."""
+        glyph = self._get_diacritic_glyph()
+        if self.initial and glyph.lower == GreekAlphabet.LOWER_UPSILON:
+            return True
+        else:
+            return glyph.asper
+
+    def is_smooth(self) -> bool:
+        """Tells if said vowel has smooth breathing.
+        Based on Smyth § 9 and 10."""
+        return self._get_diacritic_glyph().lenis
+
+    def check_diaeresis(self) -> bool:
+        """Checks that diaeresis only appear on upsilon and iota, nevertheless others.
+        Should be considered a grammatical error, inverted from Smyth § 8."""
+        return not (self.chunk[0].lower not in (
+            GreekAlphabet.LOWER_IOTA, GreekAlphabet.LOWER_UPSILON) and self.chunk[0].diaeresis)
+
+    def check_asper_lenis(self) -> bool:
+        """Checks that asper and lenis doesn't apply on the same time.
+        Should be considered a grammatical error, inverted from Smyth § 9."""
+        glyph = self._get_diacritic_glyph()
+        return not (glyph.asper and glyph.lenis)
+
+    def check_upsilon_lenis(self) -> bool:
+        """Checks that initial upsilon doesn't have a lenis.
+        Should be considered a grammatical error, inverted from Smyth § 10."""
+        return not (self.initial and self.chunk[0].lower == GreekAlphabet.LOWER_UPSILON and self.chunk[0].lenis)
+
     @staticmethod
     def is_vowel(glyph: GreekGlyph) -> bool:
         """Tells if a glyph is a vowel.
@@ -180,7 +217,8 @@ class GreekVowel(GlyphChunk, AbstractGlyphSearch):
 
     @classmethod
     def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
-        if glyphs[0].lower in cls.VOWELS:
-            return cls(glyphs[0:1], initial), 1
-        else:
-            return None, 0
+        cluster = glyphs[0]
+        for vowel in cls.VOWELS:
+            if cluster.lower == vowel:
+                return cls(glyphs[0:1], initial), 1
+        return None, 0

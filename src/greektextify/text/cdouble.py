@@ -62,8 +62,8 @@ class DoubleConsonant(GreekConsonant):
 
     @classmethod
     def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
-        cluster = glyphs[0].lower + glyphs[1].lower
-        if cluster in cls.DOUBLE_CONSONANT:
-            return cls(glyphs[0:2], initial), 2
-        else:
-            return None, 0
+        cluster = glyphs[0:2]
+        for pattern in cls.DOUBLE_CONSONANT:
+            if pattern.same_lower(cluster):
+                return cls(cluster, initial), 2
+        return None, 0
