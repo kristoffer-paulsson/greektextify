@@ -22,6 +22,7 @@
 """Greek standardization of Koine unicode variants of spelling in the academic."""
 import regex
 
+from greektextify.alphabet import GreekAlphabet
 from greektextify.uni.extended import GreekExtended
 from greektextify.uni.midway import GreekMidway
 from greektextify.token.punctuation import GreekPunctuation
@@ -38,7 +39,9 @@ class PdlUtfStandard(TokenStandardizerMixin):
     COLON = '\u003A'
 
     PDL_TRANSFORM = {
-        ord(MODIFIER_LETTER_APOSTROPHE): ord(GreekMidway.APOSTROPHE),
+        ord(GreekExtended.KORONIS): ord(GreekAlphabet.APOSTROPHE),  # Added in development
+
+        ord(MODIFIER_LETTER_APOSTROPHE): ord(GreekAlphabet.APOSTROPHE),
         ord(MIDDLE_DOT): ord(GreekPunctuation.ANO_TELEIA),
         ord(COLON): ord(GreekPunctuation.ANO_TELEIA),
         ord(SEMICOLON): ord(GreekPunctuation.QUESTION_MARK),

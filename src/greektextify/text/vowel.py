@@ -25,6 +25,9 @@ from enum import Enum
 from greektextify.alphabet import GreekAlphabet
 from greektextify.glyph import GreekGlyph
 from greektextify.nlp.contextual import NlpWarning
+from greektextify.text.chunk import GlyphChunk
+from greektextify.text.scan import AbstractGlyphSearch
+from greektextify.uni.midway import GreekMidway
 
 
 class IPAVowelLength(Enum):
@@ -58,7 +61,7 @@ class IPAVowelHeight(Enum):
     OPEN = 6
 
 
-class GreekVowels:
+class GreekVowel(GlyphChunk, AbstractGlyphSearch):
     """Koine vowels described as in Smyth grammar 1.1.2."""
 
     # Smyth § 4, even vowel length according to IPA.
@@ -123,13 +126,13 @@ class GreekVowels:
        GreekAlphabet.LOWER_UPSILON
     ])
 
-    VOWELS = frozenset(set(L_SHORT) | set(L_LONG) | set(L_VARIABLE))
+    VOWELS = frozenset(set(L_SHORT) | set(L_LONG) | set(L_VARIABLE) | {GreekAlphabet.APOSTROPHE})
 
     @staticmethod
     def is_vowel(glyph: GreekGlyph) -> bool:
         """Tells if a glyph is a vowel.
         Based on Smyth § 4."""
-        return glyph.ch.lower() in GreekVowels.VOWELS
+        return glyph.lower in GreekVowel.VOWELS
 
     @classmethod
     def vowel_length(cls, glyph: GreekGlyph) -> IPAVowelLength:
@@ -173,4 +176,11 @@ class GreekVowels:
     @classmethod
     def valid_diaeresis(cls, glyph: GreekGlyph) -> bool:
         """Presumes that the vowel is not part of a diphthong and applies Smyth § 8."""
-        return glyph.ch.lower() in (GreekAlphabet.LOWER_IOTA, GreekAlphabet.LOWER_UPSILON) and glyph.dialytika
+        return glyph.lower in (GreekAlphabet.LOWER_IOTA, GreekAlphabet.LOWER_UPSILON) and glyph.dialytika
+
+    @classmethod
+    def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
+        if glyphs[0].lower in cls.VOWELS:
+            return cls(glyphs[0:1], initial), 1
+        else:
+            return None, 0

@@ -110,6 +110,10 @@ class GreekGlyph(NamedTuple):
         """Another name for vrachy."""
         return self.vrachy
 
+    @property
+    def lower(self) -> str:
+        return self.ch.lower()
+
     def compare(
             self,
             glyph: 'GreekGlyph',
@@ -232,7 +236,10 @@ class GreekGlyph(NamedTuple):
 
 GREEK_GLYPH_COMBO = frozenset([
     # Hyphen
-    GreekGlyph('-', False, False, False, False, False, False, False, False, False),
+    GreekGlyph(GreekAlphabet.HYPHEN_MINUS, False, False, False, False, False, False, False, False, False),
+
+    # Apostrophe
+    GreekGlyph(GreekAlphabet.APOSTROPHE, False, False, False, False, False, False, False, False, False),
 
     # Digamma
     GreekGlyph('Ϝ', False, False, False, False, False, False, False, False, False),

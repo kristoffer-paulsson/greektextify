@@ -41,7 +41,7 @@ class GlyphPattern:
         return True
 
     @staticmethod
-    def overlap(a: GreekGlyph, b: GreekGlyph) -> bool:
+    def overlap(a: GreekGlyph, b: GreekGlyph, caseSensitive: bool = False) -> bool:
         """Tells if A fits inside B where the booleans counts as a set."""
         same = True
         for key in GreekGlyph._fields:

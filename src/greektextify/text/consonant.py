@@ -26,7 +26,8 @@ from greektextify.alphabet import GreekAlphabet
 from greektextify.glyph import GreekGlyph
 
 from greektextify.diacritic import GreekDiacritic
-from greektextify.text.pattern import GlyphPattern
+from greektextify.text.chunk import GlyphChunk
+from greektextify.text.scan import AbstractGlyphSearch
 
 
 class Voice(Enum):
@@ -42,7 +43,7 @@ class Voice(Enum):
 
 # RHO can be Dental and Palatal, usually voiced but with rough breathing voiceless.
 
-class GreekConsonant:
+class GreekConsonant(GlyphChunk, AbstractGlyphSearch):
 
     GAMMA_NASAL = None
 
@@ -101,7 +102,7 @@ class GreekConsonant:
         # GreekAlphabet.LOWER_TAU,
         # GreekAlphabet.LOWER_THETA,
         GreekAlphabet.LOWER_ZETA,
-    ] | list(LINGUALS))
+    ] + list(LINGUALS))
 
     PALATIAL = frozenset([
         GreekAlphabet.LOWER_IOTA,
@@ -134,7 +135,7 @@ class GreekConsonant:
 
     SPIRANTS = frozenset([
         GreekAlphabet.LOWER_SIGMA_FINAL,
-    ] | list(SIBILANT))
+    ] + list(SIBILANT))
 
     MIDDLE = frozenset([
         GreekAlphabet.LOWER_BETA,
@@ -154,7 +155,7 @@ class GreekConsonant:
         GreekAlphabet.LOWER_CHI
     ])
 
-    ASPIRATES = frozenset([GreekDiacritic.COMBINING_DASIA] | list(ROUGH))  # A group of voiceless consonants
+    ASPIRATES = frozenset([GreekDiacritic.COMBINING_DASIA] + list(ROUGH))  # A group of voiceless consonants
 
     STOPS = frozenset(set(MIDDLE) | set(SMOOTH) | set(ROUGH))
 
@@ -164,7 +165,7 @@ class GreekConsonant:
         GreekAlphabet.LOWER_XI,
     ])
 
-    CONSONTANTS = frozenset([
+    CONSONANTS = frozenset([
         GreekAlphabet.LOWER_BETA, GreekAlphabet.LOWER_GAMMA, GreekAlphabet.LOWER_DELTA, GreekAlphabet.LOWER_ZETA,
         GreekAlphabet.LOWER_THETA, GreekAlphabet.LOWER_KAPPA, GreekAlphabet.LOWER_LAMBDA, GreekAlphabet.LOWER_MU,
         GreekAlphabet.LOWER_NU, GreekAlphabet.LOWER_XI, GreekAlphabet.LOWER_PI, GreekAlphabet.LOWER_RHO,
@@ -173,3 +174,10 @@ class GreekConsonant:
 
         GreekAlphabet.LOWER_SIGMA_FINAL, GreekAlphabet.LOWER_DIGAMMA  # Necessary consonants
     ])
+
+    @classmethod
+    def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
+        if glyphs[0].lower in cls.CONSONANTS:
+            return cls(glyphs[0:1], initial), 1
+        else:
+            return None, 0

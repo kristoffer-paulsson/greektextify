@@ -12,6 +12,8 @@ from greektextify.token.spacing import Spacing
 from greektextify.token.token import Tokenize
 from greektextify.token.word import GreekWord
 
+from greektextify.text.word import GreekWord as GW2
+
 
 class Example(ContextObject):
 
@@ -44,7 +46,7 @@ class Example(ContextObject):
                 if len(token) > 1:
                     # glyphs = GreekWord(token).glyphs
                     # print(token, GreekWord.romanize(glyphs), GreekWord.pronounce(glyphs))
-                    print(token)
+                    print(token, GW2.analyze(GreekWord.glyphen(token)))
                 else:
                     print(token)
 

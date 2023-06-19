@@ -29,7 +29,7 @@ from greektextify.token.immaterializer import TokenImmaterializableMixin
 from greektextify.text.ipa import IPA
 from greektextify.uni.midway import GreekMidway
 from greektextify.text.syllable import GreekSyllable
-from greektextify.text.vowels import GreekVowels
+from greektextify.text.vowel import GreekVowel
 
 
 class GreekWord(TokenImmaterializableMixin):
@@ -79,7 +79,8 @@ class GreekWord(TokenImmaterializableMixin):
     @classmethod
     def glyphen(cls, word: str) -> tuple[GreekGlyph]:
         position = 0
-        length = len(word)-1 if word[-1] == GreekMidway.APOSTROPHE else len(word)
+        # length = len(word)-1 if word[-1] == GreekAlphabet.APOSTROPHE else len(word)
+        length = len(word)
         glyphs = list()
 
         while position != length:
@@ -100,8 +101,8 @@ class GreekWord(TokenImmaterializableMixin):
         ipa = ""
         for glyph in word:
             ipa += GreekAlphabet.SOUNDS[glyph.ch.lower()]
-            if GreekVowels.is_vowel(glyph):
-                if not GreekVowels.is_short(glyph):
+            if GreekVowel.is_vowel(glyph):
+                if not GreekVowel.is_short(glyph):
                     ipa += IPA.LONG.unicode_repr
 
         return ipa

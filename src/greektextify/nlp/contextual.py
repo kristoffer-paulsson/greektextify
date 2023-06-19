@@ -53,6 +53,7 @@ class NlpWarning(UserWarning):
     NON_GREEK_GLYPH = ("Not a greek glyph", 101)
     COMBINE_ERROR = ("Betacode invalid due to multiple combination in glyphening.", 102)
     NOT_VOWEL = ("Glyph is not a vowel.", 103)
+    PROCESS_ERROR = ("Scanner in infinite loop error.", 104)
 
     code: int
     info: dict
@@ -90,6 +91,9 @@ class NlpContext(contextlib.AbstractContextManager):
 
     def __analyze(self, context: ContextObject):
         for err, loc in context.err:
+
+            if context.err is not NlpWarning:
+                raise err
 
             print("\n{}, {}".format(err, loc))
             if err.code == NlpWarning.TOKENIZE_ERROR[1]:

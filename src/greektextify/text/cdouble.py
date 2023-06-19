@@ -21,15 +21,21 @@
 #
 """Double Consonant consonant cluster."""
 from greektextify.alphabet import GreekAlphabet
+from greektextify.glyph import GreekGlyph
+from greektextify.text.chunk import GlyphChunk
+from greektextify.text.consonant import GreekConsonant
+from greektextify.text.pattern import GlyphPattern
 
 
-class DoubleConsonant:
+class DoubleConsonant(GreekConsonant):
     SIGMA_DELTA = GreekAlphabet.LOWER_SIGMA + GreekAlphabet.LOWER_DELTA
     DELTA_SIGMA = GreekAlphabet.LOWER_DELTA + GreekAlphabet.LOWER_SIGMA
     DELTA_IOTA = GreekAlphabet.LOWER_DELTA + GreekAlphabet.LOWER_IOTA
 
     ZETA = frozenset([
-        SIGMA_DELTA, DELTA_SIGMA, DELTA_IOTA
+        GlyphPattern(SIGMA_DELTA),
+        GlyphPattern(DELTA_SIGMA),
+        GlyphPattern(DELTA_IOTA)
     ])
 
     KAPPA_SIGMA = GreekAlphabet.LOWER_KAPPA + GreekAlphabet.LOWER_SIGMA
@@ -37,7 +43,9 @@ class DoubleConsonant:
     CHI_SIGMA = GreekAlphabet.LOWER_CHI + GreekAlphabet.LOWER_SIGMA
 
     XI = frozenset([
-        KAPPA_SIGMA, GAMMA_SIGMA, CHI_SIGMA
+        GlyphPattern(KAPPA_SIGMA),
+        GlyphPattern(GAMMA_SIGMA),
+        GlyphPattern(CHI_SIGMA)
     ])
 
     PI_SIGMA = GreekAlphabet.LOWER_PI + GreekAlphabet.LOWER_SIGMA
@@ -45,5 +53,17 @@ class DoubleConsonant:
     PHI_SIGMA = GreekAlphabet.LOWER_PHI + GreekAlphabet.LOWER_SIGMA
 
     PSI = frozenset([
-        PI_SIGMA, BETA_SIGMA, PHI_SIGMA
+        GlyphPattern(PI_SIGMA),
+        GlyphPattern(BETA_SIGMA),
+        GlyphPattern(PHI_SIGMA)
     ])
+
+    DOUBLE_CONSONANT = frozenset(set(ZETA) | set(XI) | set(PSI))
+
+    @classmethod
+    def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
+        cluster = glyphs[0].lower + glyphs[1].lower
+        if cluster in cls.DOUBLE_CONSONANT:
+            return cls(glyphs[0:2], initial), 2
+        else:
+            return None, 0

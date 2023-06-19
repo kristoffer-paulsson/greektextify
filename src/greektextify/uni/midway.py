@@ -72,6 +72,6 @@ class GreekMidway:
 
     LETTERS = frozenset(EXPANDABLE_LETTERS.keys())
 
-    APOSTROPHE = '\u0027'
+    # APOSTROPHE = '\u0027'
 
-    MODIFIERS = frozenset([APOSTROPHE])
+    MODIFIERS = frozenset([GreekAlphabet.APOSTROPHE])

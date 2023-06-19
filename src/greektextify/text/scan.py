@@ -19,24 +19,19 @@
 # Contributors:
 #     Kristoffer Paulsson - initial implementation
 #
-"""Chunk of glyphs from a technical perspective."""
+"""Scanning utility for individual glyphs as chunks."""
+from abc import abstractmethod
+
 from greektextify.glyph import GreekGlyph
+from greektextify.text.chunk import GlyphChunk
 
 
-class GlyphChunk:
+class AbstractGlyphSearch:
 
-    def __init__(self, chunk: tuple[GreekGlyph], initial: bool = False):
-        self._chunk = chunk
-        self._initial = initial
+    def _at_least(self, glyphs: tuple[GreekGlyph], width: int) -> bool:
+        return len(glyphs) == width
 
-    @property
-    def chunk(self) -> tuple[GreekGlyph]:
-        return self._chunk
-
-    @property
-    def initial(self) -> bool:
-        return self._initial
-
-    def __repr__(self) -> str:
-        return str("".join(str(x) for x in self._chunk))
-
+    @classmethod
+    @abstractmethod
+    def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
+        raise NotImplemented()

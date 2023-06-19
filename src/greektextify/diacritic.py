@@ -56,7 +56,6 @@ class GreekDiacritic:
     COMBINING_DOUBLE_BREVE_BELOW = '\u035C'  # Synizesis
     COMBINING_RING_BELOW = '\u0325'  # Syllabic/sonant LAMBDA
 
-
     DEBUG_CIRCLE = '\u20DD'  # Symbol for combining unicode character debugging
 
     DIACRITICS = frozenset([

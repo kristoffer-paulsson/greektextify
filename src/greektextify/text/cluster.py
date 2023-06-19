@@ -25,5 +25,5 @@ from typing import List
 
 class GlyphCluster:
 
-    def __init__(self, cluster: List['GlyphCluster']):
+    def __init__(self, cluster: tuple['GlyphCluster']):
         self._cluster = cluster

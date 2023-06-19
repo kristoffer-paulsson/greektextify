@@ -25,9 +25,10 @@ from .chunk import GlyphChunk
 from greektextify.diacritic import GreekDiacritic
 from greektextify.glyph import GreekGlyph
 from .pattern import GlyphPattern
+from .vowel import GreekVowel
 
 
-class GreekDiphthong(GlyphChunk):
+class GreekDiphthong(GreekVowel):
 
     ALPHA_IOTA = GreekAlphabet.LOWER_ALPHA + GreekAlphabet.LOWER_IOTA
     EPSILON_IOTA = GreekAlphabet.LOWER_EPSILON + GreekAlphabet.LOWER_IOTA
@@ -61,8 +62,8 @@ class GreekDiphthong(GlyphChunk):
         GlyphPattern(UPSILON_IOTA),
     ])
 
-    def __init__(self, affix: tuple[GreekGlyph]):
-        GlyphChunk.__init__(self, affix)
+    # def __init__(self, affix: tuple[GreekGlyph]):
+    #    GlyphChunk.__init__(self, affix)
 
     def is_genuine(self) -> bool:
         """Tells whether EPSILON_IOTA or OMICRON_UPSILON are genuine or spurious, based on Smyth § 6."""
@@ -74,17 +75,20 @@ class GreekDiphthong(GlyphChunk):
 
     def is_proper(self) -> bool:
         """Tells if a diphthong is inverted improper, based on Smyth § 5."""
-        return not self._affix[0].ypogegrammeni
+        return not self._chunk[0].ypogegrammeni
 
     def is_short(self) -> bool:
         """Tells if a diphthong is short (a property of vowels), based on Smyth § 5."""
         return False
 
     @classmethod
-    def diphthong(cls, glyphs: tuple[GreekGlyph]) -> tuple['GreekDiphthong', int] | tuple[None, int]:
+    def scan(cls, glyphs: tuple[GreekGlyph], initial: bool = False) -> tuple[GlyphChunk, int] | tuple[None, int]:
         for pattern in cls.IMPROPER:
             if GlyphPattern.overlap(pattern.affix[0], glyphs[0]):
-                return cls(glyphs[0:1]), 1
+                return cls(glyphs[0:1], initial), 1
+
+        if len(glyphs) <= 1:
+            return None, 0
 
         # According to Smyth § 8, if a diphthong has diaeresis over iota or upsilon, those are distinguished vowels.
         if glyphs[1].dialytika:
@@ -92,7 +96,7 @@ class GreekDiphthong(GlyphChunk):
 
         for pattern in cls.PROPER:
             if GlyphPattern.overlap(pattern.affix[0], glyphs[0]) and GlyphPattern.overlap(pattern.affix[1], glyphs[1]):
-                return cls(glyphs[0:2]), 2
+                return cls(glyphs[0:2], initial), 2
 
         return None, 0
 

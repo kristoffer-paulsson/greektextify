@@ -20,14 +20,16 @@
 #     Kristoffer Paulsson - initial implementation
 #
 """Greek syllable representing main letter plus diacritics."""
+from greektextify.text.chunk import GlyphChunk
 from greektextify.text.cluster import GlyphCluster
 from greektextify.glyph import GreekGlyph
+from greektextify.text.scan import AbstractGlyphSearch
 
 
-class GreekSyllable(GlyphCluster):
+class GreekSyllable(GlyphCluster, AbstractGlyphSearch):
 
     def __init__(self, onset: GlyphCluster = None, nucleus: GlyphCluster = None, coda: GlyphCluster = None):
-        GlyphCluster.__init__(self, list(filter(lambda item: item is not None, [onset, nucleus, coda])))
+        GlyphCluster.__init__(self, tuple(filter(None, [onset, nucleus, coda])))  # Check if works!
 
     # onset
     # nucleus
@@ -38,6 +40,6 @@ class GreekSyllable(GlyphCluster):
     # nc
     # onc
 
-    @staticmethod
-    def syllabify(glyphs: tuple[GreekGlyph]) -> tuple['GreekSyllable', int] | tuple[None, int]:
-        return None, 0
+    @classmethod
+    def scan(cls, glyphs: tuple[GreekGlyph]) -> tuple[GlyphChunk, int] | tuple[None, int]:
+        pass

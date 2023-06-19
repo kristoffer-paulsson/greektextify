@@ -107,8 +107,9 @@ class GreekAlphabet:
     VOWEL_UPPER = (UPPER_ALPHA, UPPER_EPSILON, UPPER_ETA, UPPER_IOTA, UPPER_OMICRON, UPPER_UPSILON, UPPER_OMEGA)
 
     HYPHEN_MINUS = '\u002D'
+    APOSTROPHE = '\u0027'
 
-    ALPHABET = frozenset(CASE_LOWER | CASE_UPPER | {HYPHEN_MINUS})
+    ALPHABET = frozenset(CASE_LOWER | CASE_UPPER | {HYPHEN_MINUS} | {APOSTROPHE})
 
     # https://en.wikipedia.org/wiki/Ancient_Greek_phonology
     SOUNDS = {
