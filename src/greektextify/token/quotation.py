@@ -19,7 +19,7 @@
 # Contributors:
 #     Kristoffer Paulsson - initial implementation
 #
-"""Greek qoutation marks."""
+"""Greek quotation marks."""
 from greektextify.token.immaterializer import TokenImmaterializableMixin
 
 
