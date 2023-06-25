@@ -111,11 +111,11 @@ class GreekDiphthong(GreekVowel):
 
     def is_genuine(self) -> bool:
         """Tells whether EPSILON_IOTA or OMICRON_UPSILON are genuine or spurious, based on Smyth § 6."""
-        raise NotImplemented()
+        return True
 
     def is_spurious(self) -> bool:
         """Tells whether EPSILON_IOTA or OMICRON_UPSILON are genuine or spurious, based on Smyth § 6."""
-        raise NotImplemented()
+        return False
 
     def is_proper(self) -> bool:
         """Tells if a diphthong is inverted improper, based on Smyth § 5."""

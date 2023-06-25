@@ -55,5 +55,5 @@ setup(
     ],
     package_dir={"": "src"},
     packages=["greektextify"],
-    python_requires=">=3.8, <4"
+    python_requires=">=3.10, <4"
 )
